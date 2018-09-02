@@ -1,0 +1,101 @@
+.drawer,
+.background {
+  animation-fill-mode: forwards;
+  animation-duration: 250ms;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  z-index: 3;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.drawer.open {
+  animation-name: drawer-open;
+}
+
+.drawer.closed {
+  animation-name: drawer-closed;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.25);
+  border: none;
+  outline: none;
+}
+
+.background.open {
+  animation-name: background-open;
+}
+
+.background.closed {
+  animation-name: background-closed;
+}
+
+@keyframes drawer-closed {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-300px);
+  }
+}
+
+@keyframes drawer-open {
+  from {
+    transform: translateX(-300px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes background-closed {
+  from {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes background-open {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+}
+
+.drawer-content {
+}
+
+.drawer-content img {
+  max-width: 100%;
+}
+
+.drawer-content > div {
+  padding: 15px;
+}
+
+.drawer-content a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  line-height: 32px;
+}

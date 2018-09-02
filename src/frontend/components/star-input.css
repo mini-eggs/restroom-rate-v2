@@ -1,0 +1,25 @@
+.star-input {
+  display: flex;
+}
+
+.star-input .active i {
+  color: gold;
+}
+
+.star-input .active {
+  animation-name: bounce-up;
+  animation-duration: 150ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes bounce-up {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.75);
+  }
+  10% {
+    transform: scale(1);
+  }
+}

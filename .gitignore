@@ -1,0 +1,6 @@
+dist
+data
+.cache
+node_modules
+.env
+v8-compile-cache-0

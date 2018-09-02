@@ -1,0 +1,10 @@
+main {
+  position: absolute;
+  top: 128px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 128px);
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

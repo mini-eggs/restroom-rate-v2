@@ -1,0 +1,67 @@
+{
+  "name": "restroom-rate-v2",
+  "version": "1.0.0",
+  "description": "An example application built with Wigly.",
+  "main": "src/backend/main.js",
+  "author": "Evan M Jones <me@evanjon.es> (https://evanjon.es/)",
+  "license": "MIT",
+  "scripts": {
+    "setup": "[ -d node_modules ] || npm i --silent",
+    "start": "npm run setup && npm run start:dev",
+    "start:dev": "npm-run-all -p start:frontend start:backend",
+    "start:frontend": "webpack-dev-server --mode development --open --hot --inline --hot-only",
+    "start:backend": "nodemon -w src/backend -q -r dotenv/config -r esm src/backend/main.js",
+    "prod": "npm run setup && npm run prod:frontend && npm run prod:backend",
+    "prod:frontend": "webpack --mode production --hide-modules",
+    "prod:backend": "NODE_ENV='production' node -r dotenv/config -r esm src/backend/main.js",
+    "test": "npm run setup && npm run test:ava",
+    "test:ava": "ava"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chance": "^1.0.16",
+    "compression": "^1.7.3",
+    "cors": "^2.8.4",
+    "esm": "^3.0.80",
+    "express": "^4.16.3",
+    "helmet": "^3.13.0",
+    "imgur": "^0.2.1",
+    "joi": "^13.6.0",
+    "mysql2": "^1.6.1",
+    "navaid": "^1.0.0",
+    "sequelize": "^4.38.0",
+    "unistore": "^3.0.6",
+    "wigly": "0.0.28"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "ava": "^0.25.0",
+    "babel-loader": "^8.0.1",
+    "css-loader": "^1.0.0",
+    "dotenv": "^6.0.0",
+    "file-loader": "^2.0.0",
+    "mini-css-extract-plugin": "^0.4.2",
+    "nodemon": "^1.18.3",
+    "npm-run-all": "^4.1.3",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "supertest": "^3.1.0",
+    "webpack": "^4.17.1",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
+  },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ],
+  "ava": {
+    "require": [
+      "dotenv/config",
+      "esm"
+    ]
+  }
+}
