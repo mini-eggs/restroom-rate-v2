@@ -35,15 +35,10 @@ export default component({
   },
 
   handleRoute(f) {
-    return params => {
-      this.setState(
-        () => ({ component: null, params: {} }),
-        async () => {
-          let mod = await f();
-          let component = mod.default;
-          this.setState(() => ({ component, params }));
-        }
-      );
+    return async params => {
+      let mod = await f();
+      let component = mod.default;
+      this.setState(() => ({ component, params }));
     };
   },
 

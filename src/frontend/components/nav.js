@@ -3,35 +3,49 @@ import Header from "./header";
 import Drawer from "./drawer";
 import "./nav.css";
 
+let NavLinks = component({
+  render() {
+    return (
+      <nav>
+        {this.props.options.map(({ href, test, title }) => (
+          <div class={test(location.pathname) && "active"}>
+            <a href={href}>{title}</a>
+          </div>
+        ))}
+      </nav>
+    );
+  }
+});
+
+let initialState = {
+  drawer: false,
+  drawerAnimating: false,
+  options: [
+    { href: "/discover", test: url => url.includes("/discover"), title: "Discover" },
+    { href: "/rate", test: url => url.includes("/rate"), title: "Rate" },
+    { href: "/account", test: url => url.includes("/account"), title: "Account" }
+  ]
+};
+
+let actions = {
+  animationToggle: ({ drawer }) => ({ drawer: !drawer, drawerAnimating: true }),
+  closeAll: () => ({ drawer: false, drawerAnimating: false })
+};
+
 export default component({
-  data() {
-    return {
-      drawer: false,
-      drawerAnimating: false,
-      options: [
-        { href: "/discover", test: url => url.includes("/discover"), title: "Discover" },
-        { href: "/rate", test: url => url.includes("/rate"), title: "Rate" },
-        { href: "/account", test: url => url.includes("/account"), title: "Account" }
-      ]
-    };
-  },
+  data: () => ({ ...initialState }),
 
   onDrawerToggle() {
-    this.setState(
-      ({ drawer }) => ({ drawer: !drawer, drawerAnimating: true }),
-      () => {
-        if (this.state.drawer) {
-          setTimeout(() => {
-            this.setState(() => ({ drawer: false, drawerAnimating: false }));
-          }, 250);
-        }
-      }
-    );
+    this.setState(actions.animationToggle, this.afterAnimtion);
+  },
+
+  afterAnimtion() {
+    if (!this.state.drawer) {
+      setTimeout(() => this.setState(actions.closeAll), 250);
+    }
   },
 
   render() {
-    let loc = location.pathname;
-
     return (
       <div>
         <Header onDrawerToggle={this.onDrawerToggle} />
@@ -40,13 +54,7 @@ export default component({
           active={this.state.drawer}
           animating={this.state.drawerAnimating}
         />
-        <nav>
-          {this.state.options.map(({ href, test, title }) => (
-            <div class={test(loc) && "active"}>
-              <a href={href}>{title}</a>
-            </div>
-          ))}
-        </nav>
+        <NavLinks options={this.state.options} />
       </div>
     );
   }

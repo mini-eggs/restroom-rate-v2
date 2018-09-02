@@ -4,7 +4,7 @@ var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
-var isProd = process.argv.join("").indexOf("production") !== -1;
+// var isProd = process.argv.join("").indexOf("production") !== -1;
 
 module.exports = {
   entry: "./src/frontend/main.js",

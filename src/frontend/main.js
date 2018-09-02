@@ -20,8 +20,12 @@ render(App, document.body);
 if (module.hot) {
   module.hot.accept();
 
-  module.hot.dispose(data => {
+  module.hot.dispose(() => {
     let el = document.getElementById("app");
     el.parentElement.removeChild(el);
   });
+}
+
+if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+  navigator.serviceWorker.register("/sw.js");
 }

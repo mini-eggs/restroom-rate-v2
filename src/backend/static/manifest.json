@@ -1,0 +1,6 @@
+{
+  "name": "Restroom Rate",
+  "short_name": "Restroom Rate",
+  "start_url": "/",
+  "display": "standalone"
+}

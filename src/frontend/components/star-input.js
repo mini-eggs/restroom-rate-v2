@@ -2,14 +2,15 @@ import { h, component } from "wigly";
 import "./star-input.css";
 
 export default component({
-  data() {
-    return { active: [] };
-  },
+  data: () => ({ active: [] }),
 
   handleClick(index) {
     let active = Array.from({ length: index + 1 }).map(() => true);
-    this.props.oninput(active.length);
-    this.setState(() => ({ active }));
+    this.setState(() => ({ active }), this.propogateInput);
+  },
+
+  propogateInput() {
+    this.props.oninput(this.state.active.length);
   },
 
   render() {
