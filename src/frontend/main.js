@@ -12,9 +12,9 @@ if (module.hot) {
 let main = () => {
   render(App, document.body);
 
-  if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
-    navigator.serviceWorker.register("/sw.js");
-  }
+  // if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+  //   navigator.serviceWorker.register("/sw.js");
+  // }
 };
 
 window.main = main;

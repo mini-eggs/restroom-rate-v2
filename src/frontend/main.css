@@ -1,5 +1,11 @@
+html,
+body {
+  background: #f2f2f2;
+}
+
 body,
 * {
+  margin: 0;
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -15,22 +21,6 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* Mainly for in browser dev, this application is a primarily for mobile devices. */
-@media (min-width: 800px) {
-  body {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 100vh;
-    max-width: 400px;
-    max-height: 800px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    overflow: hidden;
-  }
 }
 
 h1,
@@ -66,3 +56,31 @@ a {
 ::-webkit-scrollbar-thumb {
   background: transparent;
 }
+
+/* Mainly for in browser dev, this application is a primarily for mobile devices. */
+/* @media (min-width: 800px) {
+  html {
+    background: transparent;
+  }
+
+  body {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    max-width: 400px;
+    max-height: 800px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    overflow: hidden;
+  }
+
+  main {
+    background: rgba(0, 0, 0, 0.04);
+    height: calc(800px - 128px);
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+} */

@@ -1,5 +1,4 @@
 import Joi from "joi";
-import ImageService from "./image";
 import rate from "../database/models/rate";
 
 class RateService {
@@ -42,7 +41,6 @@ class RateService {
   static async create(props) {
     try {
       await RateService.validate(props);
-      props.image = await ImageService.uploadBase64(props.image);
       return await rate.create(props);
     } catch (e) {
       return e;
@@ -55,7 +53,7 @@ class RateService {
 
   static async query({ limit, page }) {
     let offset = limit * page;
-    let posts = await rate.findAll({ limit, offset });
+    let posts = await rate.findAll({ limit, offset, order: [["id", "DESC"]] });
     return posts.map(RateService.format);
   }
 }

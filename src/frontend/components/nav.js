@@ -1,6 +1,5 @@
 import { h, component } from "wigly";
-import bus from "../packages/bus";
-import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
 import Header from "./header";
 import Drawer from "./drawer";
 import "./nav.css";
@@ -22,7 +21,6 @@ let NavLinks = component({
 let initialState = {
   drawer: false,
   drawerAnimating: false,
-  listener: null,
   scroll: 0,
   show: true,
   options: [
@@ -41,9 +39,8 @@ export default component({
   data: () => ({ ...initialState }),
 
   mounted() {
-    this.handleScroll = debounce(this.handleScroll, 250);
-    let listener = bus.on("scroll", this.handleScroll);
-    this.setState(() => ({ listener }));
+    this.handleScroll = throttle(this.handleScroll, 16 * 10);
+    window.addEventListener("scroll", this.handleScroll);
   },
 
   destroyed() {
@@ -52,12 +49,9 @@ export default component({
 
   handleScroll(e) {
     let last = this.state.scroll;
-    let scroll = e.target.scrollTop;
-
+    let scroll = (window.pageYOffset || document.scrollTop) - (document.clientTop || 0);
     let diff = Math.abs(scroll - last);
     let show = !(scroll > 50);
-    diff > 25 && (show = scroll < last);
-
     this.setState(() => ({ scroll, show }));
   },
 

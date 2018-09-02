@@ -16,11 +16,14 @@ export default component({
   render() {
     return (
       <div class="star-input">
-        {Array.from({ length: this.props.length }).map((_, index) => (
-          <div onclick={() => this.handleClick(index)} class={this.state.active[index] ? "active" : ""}>
-            <i class="material-icons">star</i>
-          </div>
-        ))}
+        {Array.from({ length: this.props.length }).map((_, index) => {
+          let className = this.state.active[index] ? "active" : "inactive"; // hmmmm. we might have an issue here
+          return (
+            <div onclick={() => this.handleClick(index)} class={className}>
+              <i class="material-icons">star</i>
+            </div>
+          );
+        })}
       </div>
     );
   }

@@ -1,5 +1,5 @@
 var path = require("path");
-// var webpack = require("webpack");
+var webpack = require("webpack");
 var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -71,7 +71,12 @@ module.exports = {
   plugins: [
     // new BundleAnalyzerPlugin(),
     new MiniCssExtractPlugin(),
-    new OptimizeCSSAssetsPlugin()
+    new OptimizeCSSAssetsPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        IMGUR_KEY: JSON.stringify(process.env.IMGUR_KEY)
+      }
+    })
     // new webpack.IgnorePlugin(/process/),
     // new webpack.IgnorePlugin(/regexparam/),
     // new webpack.IgnorePlugin(/babel/)
