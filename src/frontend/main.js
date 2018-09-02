@@ -1,31 +1,20 @@
-import { h, component, render } from "wigly";
-import Router from "./router";
-import Nav from "./components/nav";
-import "./main.css";
-
-let App = component({
-  render() {
-    return (
-      <div id="app">
-        <Router>
-          <Nav />
-        </Router>
-      </div>
-    );
-  }
-});
-
-render(App, document.body);
+import { render } from "wigly";
+import App from "./app";
 
 if (module.hot) {
   module.hot.accept();
-
-  module.hot.dispose(() => {
+  module.hot.dispose(function() {
     let el = document.getElementById("app");
     el.parentElement.removeChild(el);
   });
 }
 
-if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
-  navigator.serviceWorker.register("/sw.js");
-}
+let main = () => {
+  render(App, document.body);
+
+  if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+    navigator.serviceWorker.register("/sw.js");
+  }
+};
+
+window.main = main;

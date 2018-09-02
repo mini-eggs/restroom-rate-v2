@@ -1,6 +1,6 @@
 var path = require("path");
 // var webpack = require("webpack");
-// var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
@@ -45,17 +45,9 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [
-              [
-                "@babel/preset-env",
-                {
-                  useBuiltIns: false
-                }
-              ]
-            ],
             plugins: [
               "@babel/plugin-syntax-dynamic-import",
-              "@babel/plugin-transform-runtime",
+              "@babel/plugin-proposal-object-rest-spread",
               [
                 "@babel/plugin-transform-react-jsx",
                 {

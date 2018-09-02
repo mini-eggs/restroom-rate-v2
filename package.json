@@ -9,7 +9,7 @@
     "setup": "[ -d node_modules ] || npm i --silent",
     "start": "npm run setup && npm run start:dev",
     "start:dev": "npm-run-all -p start:frontend start:backend",
-    "start:frontend": "webpack-dev-server --mode development --open --hot --inline --hot-only",
+    "start:frontend": "webpack-dev-server --mode development --open --hot --inline",
     "start:backend": "nodemon -w src/backend -q -r dotenv/config -r esm src/backend/main.js",
     "prod": "npm run setup && npm run prod:frontend && npm run prod:backend",
     "prod:frontend": "webpack --mode production",
@@ -35,11 +35,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-react-jsx": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
     "ava": "^0.25.0",
     "babel-loader": "^8.0.1",
     "css-loader": "^1.0.0",
@@ -55,9 +53,6 @@
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.7"
   },
-  "browserslist": [
-    "last 1 Chrome versions"
-  ],
   "ava": {
     "require": [
       "dotenv/config",
