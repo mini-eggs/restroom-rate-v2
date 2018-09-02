@@ -22,6 +22,6 @@ export default ({ url, method, props }) => {
     req.open(method.toUpperCase(), url);
     props && req.setRequestHeader("Content-Type", "application/json");
     req.onload = () => resolve(JSON.parse(req.responseText));
-    req.send(props);
+    req.send(JSON.stringify(props));
   });
 };

@@ -10,7 +10,8 @@ class ImageService {
   static async uploadBase64(base64) {
     try {
       let formatted = base64.split("base64,");
-      return await Imgur.uploadBase64(formatted[formatted.length - 1]);
+      let image = await Imgur.uploadBase64(formatted[formatted.length - 1]);
+      return image.data.link;
     } catch (e) {
       throw "Failed to upload image.";
     }

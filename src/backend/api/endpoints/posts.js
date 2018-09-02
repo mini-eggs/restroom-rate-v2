@@ -3,11 +3,11 @@ import RateService from "../../services/rate";
 
 let router = new Express.Router();
 
-router.get(["/", "/:category", "/:category/:page"], (req, res) => {
+router.get(["/", "/:category", "/:category/:page"], async (req, res) => {
   let category = req.params.category || undefined;
   let page = req.params.page || 0;
   let limit = 15;
-  res.json({ msg: "Not yet complete." });
+  res.json(await RateService.query({ category, page, limit }));
 });
 
 router.post("/", async (req, res) => {

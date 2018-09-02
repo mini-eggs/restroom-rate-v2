@@ -1,4 +1,6 @@
 import { h, component } from "wigly";
+import bus from "../packages/bus";
+import debounce from "lodash/debounce";
 import Header from "./header";
 import Drawer from "./drawer";
 import "./nav.css";
@@ -6,7 +8,7 @@ import "./nav.css";
 let NavLinks = component({
   render() {
     return (
-      <nav>
+      <nav class={this.props.class}>
         {this.props.options.map(({ href, test, title }) => (
           <div class={test(location.pathname) && "active"}>
             <a href={href}>{title}</a>
@@ -20,6 +22,9 @@ let NavLinks = component({
 let initialState = {
   drawer: false,
   drawerAnimating: false,
+  listener: null,
+  scroll: 0,
+  show: true,
   options: [
     { href: "/discover", test: url => url.includes("/discover"), title: "Discover" },
     { href: "/rate", test: url => url.includes("/rate"), title: "Rate" },
@@ -34,6 +39,27 @@ let actions = {
 
 export default component({
   data: () => ({ ...initialState }),
+
+  mounted() {
+    this.handleScroll = debounce(this.handleScroll, 250);
+    let listener = bus.on("scroll", this.handleScroll);
+    this.setState(() => ({ listener }));
+  },
+
+  destroyed() {
+    this.state.listener.off("scroll", this.handleScroll);
+  },
+
+  handleScroll(e) {
+    let last = this.state.scroll;
+    let scroll = e.target.scrollTop;
+
+    let diff = Math.abs(scroll - last);
+    let show = !(scroll > 50);
+    diff > 25 && (show = scroll < last);
+
+    this.setState(() => ({ scroll, show }));
+  },
 
   onDrawerToggle() {
     this.setState(actions.animationToggle, this.afterAnimtion);
@@ -54,7 +80,7 @@ export default component({
           active={this.state.drawer}
           animating={this.state.drawerAnimating}
         />
-        <NavLinks options={this.state.options} />
+        <NavLinks class={this.state.show ? "" : "hiding"} options={this.state.options} />
       </div>
     );
   }

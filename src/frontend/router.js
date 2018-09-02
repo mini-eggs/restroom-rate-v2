@@ -2,11 +2,13 @@ import { h, component } from "wigly";
 import navaid from "navaid";
 import Welcome from "./scenes/welcome";
 import "./router.css";
+import bus from "./packages/bus";
 
 let routes = [
   { path: "/", component: () => Promise.resolve({ default: Welcome }) },
   { path: "/discover", component: () => import("./scenes/discover") },
   { path: "/discover/:category", component: () => import("./scenes/discover") },
+  { path: "/discover/post/:id", component: () => import("./scenes/post") },
   { path: "/rate", component: () => import("./scenes/rate") },
   { path: "/error", component: () => import("./scenes/error") },
   { path: "/account", component: () => import("./scenes/account") }
@@ -35,10 +37,15 @@ export default component({
   },
 
   handleRoute(f) {
-    return async params => {
-      let mod = await f();
-      let component = mod.default;
-      this.setState(() => ({ component, params }));
+    return params => {
+      this.setState(
+        () => ({ component: null, params: {} }),
+        async () => {
+          let mod = await f();
+          let component = mod.default;
+          this.setState(() => ({ component, params }));
+        }
+      );
     };
   },
 
@@ -46,7 +53,9 @@ export default component({
     return (
       <div>
         {this.children}
-        <main>{this.state.component && <this.state.component {...this.state.params} />}</main>
+        <main onscroll={e => bus.emit("scroll", e)}>
+          {this.state.component && <this.state.component {...this.state.params} />}
+        </main>
       </div>
     );
   }

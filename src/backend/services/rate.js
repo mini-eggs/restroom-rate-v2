@@ -43,10 +43,20 @@ class RateService {
     try {
       await RateService.validate(props);
       props.image = await ImageService.uploadBase64(props.image);
-      let rate = await rate.create(props);
+      return await rate.create(props);
     } catch (e) {
       return e;
     }
+  }
+
+  static format({ name, image, rating, id }) {
+    return { name, image, rating, id };
+  }
+
+  static async query({ limit, page }) {
+    let offset = limit * page;
+    let posts = await rate.findAll({ limit, offset });
+    return posts.map(RateService.format);
   }
 }
 
