@@ -3,8 +3,7 @@ var webpack = require("webpack");
 var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-
-// var isProd = process.argv.join("").indexOf("production") !== -1;
+var os = require("os");
 
 module.exports = {
   entry: "./src/frontend/main.js",
@@ -64,12 +63,12 @@ module.exports = {
     contentBase: "./dist",
     compress: true,
     port: 8081,
+    host: "http://evanjon.es",
     proxy: {
-      "*": "http://localhost:8080"
+      "*": "http://evanjon.es:8080"
     }
   },
   plugins: [
-    // new BundleAnalyzerPlugin(),
     new MiniCssExtractPlugin(),
     new OptimizeCSSAssetsPlugin(),
     new webpack.DefinePlugin({
@@ -77,8 +76,5 @@ module.exports = {
         IMGUR_KEY: JSON.stringify(process.env.IMGUR_KEY)
       }
     })
-    // new webpack.IgnorePlugin(/process/),
-    // new webpack.IgnorePlugin(/regexparam/),
-    // new webpack.IgnorePlugin(/babel/)
   ]
 };

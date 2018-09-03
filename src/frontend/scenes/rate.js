@@ -23,13 +23,17 @@ let Rate = component({
 
   handleImage(event) {
     let uploaded = false;
+
     let file = event.target.files[0];
     if (!file) return this.setState(() => ({ image: undefined, uploaded }));
+
     let reader = new FileReader();
+
     reader.onloadend = () => {
       let image = reader.result;
       this.setState(() => ({ image, uploaded, uploading: true }), this.imgurUpload);
     };
+
     reader.readAsDataURL(file);
   },
 
@@ -91,7 +95,7 @@ let Rate = component({
       <form onsubmit={this.handleSubmit}>
         {this.state.image && <img style={styles.image} src={this.state.image} />}
         {this.state.uploading && <div>Uploading to Imgur...</div>}
-        <input style={styles.input} type="file" oninput={this.handleImage} accept=".jpeg,.jpg,.png" />
+        <input style={styles.input} type="file" onchange={this.handleImage} accept=".jpeg,.jpg,.png" />
         <input style={styles.input} type="text" oninput={this.bind("name")} value={this.state.name} />
         <StarInput oninput={this.handleRating} length={5} />
         <input style={styles.input} type="button" value="Submit" onclick={this.handleSubmit} />

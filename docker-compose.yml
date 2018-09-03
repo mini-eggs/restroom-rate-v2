@@ -15,7 +15,7 @@ services:
   web:
     image: node
     restart: always
-    command: npm run prod
+    command: npm start
     network_mode: host
     depends_on:
       - db

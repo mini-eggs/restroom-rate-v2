@@ -18,3 +18,9 @@ let main = () => {
 };
 
 window.main = main;
+
+// if (process.env.NODE_ENV !== "production") {
+//   window.onerror = (...args) => {
+//     alert(JSON.stringify(args));
+//   };
+// }
