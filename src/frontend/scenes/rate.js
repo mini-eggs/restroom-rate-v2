@@ -1,10 +1,10 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import StarInput from "../components/star-input";
 import EnsureUser from "../containers/ensure-user";
 import User from "../containers/users";
 import xhr, { upload } from "../packages/xhr";
 
-let Rate = component({
+var Rate = {
   data() {
     return {
       name: "",
@@ -22,15 +22,15 @@ let Rate = component({
   },
 
   handleImage(event) {
-    let uploaded = false;
+    var uploaded = false;
 
-    let file = event.target.files[0];
+    var file = event.target.files[0];
     if (!file) return this.setState(() => ({ image: undefined, uploaded }));
 
-    let reader = new FileReader();
+    var reader = new FileReader();
 
     reader.onloadend = () => {
-      let image = reader.result;
+      var image = reader.result;
       this.setState(() => ({ image, uploaded, uploading: true }), this.imgurUpload);
     };
 
@@ -38,8 +38,8 @@ let Rate = component({
   },
 
   async imgurUpload() {
-    let res = await upload(this.state.image);
-    let image = res.data.link;
+    var res = await upload(this.state.image);
+    var image = res.data.link;
 
     if (!image) {
       this.setState(() => ({ image: "", uploaded: false, uploading: false }));
@@ -63,13 +63,13 @@ let Rate = component({
   },
 
   async createNewRate() {
-    let props = {
+    var props = {
       name: this.state.name,
       rating: this.state.rating,
       image: this.state.image,
       user: this.props.user.id
     };
-    let { error } = await xhr({ url: "/posts", method: "post", props });
+    var { error } = await xhr({ url: "/posts", method: "post", props });
     this.setState(() => ({ name: "", image: undefined, rating: 0, loading: false, error }));
   },
 
@@ -78,20 +78,20 @@ let Rate = component({
   },
 
   render() {
-    let loader = (
+    var loader = (
       <div>
         <h2>Loading...</h2>
       </div>
     );
 
-    let error = (
+    var error = (
       <div>
         <h2>{this.state.error}</h2>
         <button onclick={this.handleErrorContinue}>Continue</button>
       </div>
     );
 
-    let form = (
+    var form = (
       <form onsubmit={this.handleSubmit}>
         {this.state.image && <img style={styles.image} src={this.state.image} />}
         {this.state.uploading && <div>Uploading to Imgur...</div>}
@@ -102,7 +102,7 @@ let Rate = component({
       </form>
     );
 
-    let rendered = (() => {
+    var rendered = (() => {
       switch (true) {
         case this.state.loading: {
           return loader;
@@ -118,9 +118,9 @@ let Rate = component({
 
     return <div style={styles.container}>{rendered}</div>;
   }
-});
+};
 
-let styles = {
+var styles = {
   container: {
     padding: "15px"
   },

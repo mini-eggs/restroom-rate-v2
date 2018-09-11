@@ -9,7 +9,7 @@
     "setup": "[ -d node_modules ] || npm i --silent",
     "start": "npm run setup && npm run start:dev",
     "start:dev": "npm-run-all -p start:frontend start:backend",
-    "start:frontend": "webpack-dev-server --mode development --open --hot --inline -r dotenv/config",
+    "start:frontend": "webpack-dev-server --mode development --open --hot --inline --host 0.0.0.0 -r dotenv/config",
     "start:backend": "nodemon -w src/backend -q -r dotenv/config -r esm src/backend/main.js",
     "prod": "npm run setup && npm run prod:frontend && npm run prod:backend",
     "prod:frontend": "webpack --mode production",
@@ -30,8 +30,9 @@
     "mysql2": "^1.6.1",
     "navaid": "^1.0.0",
     "sequelize": "^4.38.0",
-    "unistore": "^3.0.6",
-    "wigly": "0.0.29"
+    "wigly": "^0.1.9",
+    "wigly-store": "^0.1.9",
+    "wigly-store-connect": "^0.1.9"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -42,6 +43,7 @@
     "babel-loader": "^8.0.1",
     "css-loader": "^1.0.0",
     "dotenv": "^6.0.0",
+    "extract-css-chunks-webpack-plugin": "git+https://github.com/faceyspacey/extract-css-chunks-webpack-plugin.git",
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.2",
     "nodemon": "^1.18.3",

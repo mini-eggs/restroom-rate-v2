@@ -1,10 +1,10 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import { WithRouter } from "../router";
 import UserContainer from "./users";
 import ErrorConnect from "./error";
 
 export default Component => {
-  let EnsureUser = component({
+  var EnsureUser = {
     mounted() {
       if (!this.props.user) {
         setTimeout(this.handleNoUser, 1); // next tick
@@ -19,7 +19,7 @@ export default Component => {
     render() {
       return <Component {...this.props} {...this.children} />;
     }
-  });
+  };
 
   return ErrorConnect(WithRouter(UserContainer(EnsureUser)));
 };

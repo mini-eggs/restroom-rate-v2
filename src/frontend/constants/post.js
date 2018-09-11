@@ -1,0 +1,3 @@
+export var POST_REQUESTED = "POST_REQUESTED";
+export var POST_RECEIVED = "POST_RECEIVED";
+export var CLEAR_POST = "CLEAR_POST";

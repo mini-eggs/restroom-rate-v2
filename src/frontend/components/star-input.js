@@ -1,30 +1,28 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import "./star-input.css";
 
-export default component({
-  data: () => ({ active: [] }),
-
-  handleClick(index) {
-    let active = Array.from({ length: index + 1 }).map(() => true);
-    this.setState(() => ({ active }), this.propogateInput);
+export default {
+  data() {
+    return {
+      items: Array.from({ length: this.props.length }).map(() => false)
+    };
   },
 
-  propogateInput() {
-    this.props.oninput(this.state.active.length);
+  handleClick(x) {
+    var items = this.state.items.map((_, y) => y <= x);
+    var value = items.filter(Boolean).length;
+    this.setState(() => ({ items }), () => this.props.oninput(value));
   },
 
   render() {
     return (
       <div class="star-input">
-        {Array.from({ length: this.props.length }).map((_, index) => {
-          let className = this.state.active[index] ? "active" : "inactive"; // hmmmm. we might have an issue here
-          return (
-            <div onclick={() => this.handleClick(index)} class={className}>
-              <i class="material-icons">star</i>
-            </div>
-          );
-        })}
+        {this.state.items.map((status, index) => (
+          <div onclick={() => this.handleClick(index)} class={status ? "active" : ""}>
+            <i class="material-icons">star</i>
+          </div>
+        ))}
       </div>
     );
   }
-});
+};

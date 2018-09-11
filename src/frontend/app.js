@@ -1,9 +1,9 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import Router from "./router";
 import Nav from "./components/nav";
 import "./main.css";
 
-export default component({
+export default {
   render() {
     return (
       <div id="app">
@@ -13,4 +13,4 @@ export default component({
       </div>
     );
   }
-});
+};

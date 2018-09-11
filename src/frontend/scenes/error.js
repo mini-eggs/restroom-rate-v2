@@ -1,9 +1,9 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import ErrorConnect from "../containers/error";
 
-let msg = "Wow, we really messed up. We don't even have an error message for you.";
+var msg = "Wow, we really messed up. We don't even have an error message for you.";
 
-let error = component({
+var error = {
   destroyed() {
     this.props.clearErrorMessages();
   },
@@ -19,6 +19,6 @@ let error = component({
       </div>
     );
   }
-});
+};
 
 export default ErrorConnect(error);

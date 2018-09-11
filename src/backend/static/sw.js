@@ -1,11 +1,11 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-let PRECACHE = "precache-v1";
-let RUNTIME = "runtime";
+var PRECACHE = "precache-v1";
+var RUNTIME = "runtime";
 
 // A list of local resources we always want to be cached.
-let PRECACHE_URLS = ["0.css","0.main.js","09e77f0a750a759badf688cc7a13c856.jpeg","2.css","2.main.js","3.css","3.main.js","4.main.js","5.main.js","main.css","main.js","sw.js"]
+var PRECACHE_URLS = ["0.css","0.main.js","09e77f0a750a759badf688cc7a13c856.jpeg","2.css","2.main.js","3.css","3.main.js","4.main.js","5.main.js","main.css","main.js","sw.js"]
 
 // The install handler takes care of precaching the resources we always need.
 self.addEventListener("install", event => {
@@ -19,7 +19,7 @@ self.addEventListener("install", event => {
 
 // The activate handler takes care of cleaning up old caches.
 self.addEventListener("activate", event => {
-  let currentCaches = [PRECACHE, RUNTIME];
+  var currentCaches = [PRECACHE, RUNTIME];
   event.waitUntil(
     caches
       .keys()

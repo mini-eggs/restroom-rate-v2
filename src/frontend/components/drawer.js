@@ -1,8 +1,8 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import CategoriesContainer from "../containers/categories";
 import "./drawer.css";
 
-let Drawer = component({
+var Drawer = {
   mounted() {
     if (this.props.categories.length < 1) {
       this.props.fetchCategories();
@@ -10,7 +10,7 @@ let Drawer = component({
   },
 
   render() {
-    let { animating, active, onDrawerToggle } = this.props;
+    var { animating, active, onDrawerToggle } = this.props;
     if (!animating) return null;
 
     return (
@@ -31,6 +31,6 @@ let Drawer = component({
       </div>
     );
   }
-});
+};
 
 export default CategoriesContainer(Drawer);

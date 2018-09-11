@@ -1,7 +1,7 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import "./header.css";
 
-export default component({
+export default {
   render() {
     return (
       <header>
@@ -15,4 +15,4 @@ export default component({
       </header>
     );
   }
-});
+};

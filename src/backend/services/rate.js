@@ -3,20 +3,20 @@ import rate from "../database/models/rate";
 
 class RateService {
   static get rules() {
-    let name = Joi.string()
+    var name = Joi.string()
       .min(5)
       .max(50)
       .required();
 
-    let rating = Joi.number()
+    var rating = Joi.number()
       .integer()
       .min(1)
       .max(5)
       .required();
 
-    let image = Joi.string().required();
+    var image = Joi.string().required();
 
-    let user = Joi.number()
+    var user = Joi.number()
       .integer()
       .required();
 
@@ -48,13 +48,22 @@ class RateService {
   }
 
   static format({ name, image, rating, id }) {
-    return { name, image, rating, id };
+    var thumbnail = image
+      .replace(".png", "m.png")
+      .replace(".jpg", "m.jpg")
+      .replace(".jpeg", "m.jpeg");
+    return { name, image, rating, id, thumbnail };
   }
 
   static async query({ limit, page }) {
-    let offset = limit * page;
-    let posts = await rate.findAll({ limit, offset, order: [["id", "DESC"]] });
+    var offset = limit * page;
+    var posts = await rate.findAll({ limit, offset, order: [["id", "DESC"]] });
     return posts.map(RateService.format);
+  }
+
+  static async find({ id }) {
+    var post = await rate.find({ where: { id } });
+    return RateService.format(post);
   }
 }
 

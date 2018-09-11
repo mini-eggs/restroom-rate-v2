@@ -1,7 +1,51 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
+import PostContianer from "../containers/post";
+import "./post.css";
 
-export default component({
+var Item = {
+  data() {
+    return { loaded: false };
+  },
+
+  onImageLoad() {
+    this.setState({ loaded: true });
+  },
+
   render() {
-    return <div>here w ego;</div>;
+    return (
+      <div class={this.state.loaded && "loaded"}>
+        <img
+          style={{ backgroundImage: `url(${this.props.post.thumbnail})` }}
+          onclick={this.props.imageClick}
+          src={this.props.post.image}
+          onload={this.onImageLoad}
+        />
+        <article>
+          <h1>{this.props.post.name}</h1>
+        </article>
+      </div>
+    );
   }
-});
+};
+
+var Post = {
+  mounted() {
+    this.props.fetchPost(this.props.id);
+  },
+
+  destroyed() {
+    this.props.clearPost();
+  },
+
+  viewBigImage() {
+    alert("todo");
+  },
+
+  render() {
+    return (
+      <div class="post-single">{this.props.post && <Item imageClick={this.viewBigImage} post={this.props.post} />}</div>
+    );
+  }
+};
+
+export default PostContianer(Post);

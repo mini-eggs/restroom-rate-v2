@@ -3,7 +3,7 @@ import Categories from "./endpoints/categories";
 import User from "./endpoints/user";
 import Posts from "./endpoints/posts";
 
-let router = new Express.Router();
+var router = new Express.Router();
 
 router.use("/categories", Categories);
 router.use("/user", User);

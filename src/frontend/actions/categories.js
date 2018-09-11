@@ -1,6 +1,7 @@
 import { HAS_LOADED } from "../constants/categories";
 import xhr from "../packages/xhr";
 
-export let fetchCategories = (state, dispatch) => async () => {
-  dispatch({ type: HAS_LOADED, payload: await xhr({ url: "/categories", method: "get" }) });
+export var fetchCategories = dispatch => async () => {
+  var payload = await xhr({ url: "/categories", method: "get" });
+  dispatch(HAS_LOADED, payload);
 };

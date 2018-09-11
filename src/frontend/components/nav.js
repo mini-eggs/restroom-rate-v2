@@ -1,10 +1,10 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import throttle from "lodash/throttle";
 import Header from "./header";
 import Drawer from "./drawer";
 import "./nav.css";
 
-let NavLinks = component({
+var NavLinks = {
   render() {
     return (
       <nav class={this.props.class}>
@@ -16,9 +16,9 @@ let NavLinks = component({
       </nav>
     );
   }
-});
+};
 
-let initialState = {
+var initialState = {
   drawer: false,
   drawerAnimating: false,
   scroll: 0,
@@ -30,12 +30,7 @@ let initialState = {
   ]
 };
 
-let actions = {
-  animationToggle: ({ drawer }) => ({ drawer: !drawer, drawerAnimating: true }),
-  closeAll: () => ({ drawer: false, drawerAnimating: false })
-};
-
-export default component({
+export default {
   data: () => ({ ...initialState }),
 
   mounted() {
@@ -48,20 +43,20 @@ export default component({
   },
 
   handleScroll(e) {
-    let last = this.state.scroll;
-    let scroll = (window.pageYOffset || document.scrollTop) - (document.clientTop || 0);
-    let diff = Math.abs(scroll - last);
-    let show = !(scroll > 50);
-    this.setState(() => ({ scroll, show }));
+    var last = this.state.scroll;
+    var scroll = (window.pageYOffset || document.scrollTop) - (document.clientTop || 0);
+    var diff = Math.abs(scroll - last);
+    var show = !(scroll > 50);
+    this.setState({ scroll, show });
   },
 
   onDrawerToggle() {
-    this.setState(actions.animationToggle, this.afterAnimtion);
+    this.setState(({ drawer }) => ({ drawer: !drawer, drawerAnimating: true }), this.afterAnimtion);
   },
 
   afterAnimtion() {
     if (!this.state.drawer) {
-      setTimeout(() => this.setState(actions.closeAll), 250);
+      setTimeout(() => this.setState({ drawer: false, drawerAnimating: false }), 250);
     }
   },
 
@@ -78,4 +73,4 @@ export default component({
       </div>
     );
   }
-});
+};

@@ -6,7 +6,7 @@ export default Connect(
     shouldCreateNewUser: !state.users.loading_user && !state.users.user,
     user: state.users.user
   }),
-  (state, dispatch) => ({
-    createNewUser: createNewUser(state, dispatch)
+  dispatch => ({
+    createNewUser: createNewUser(dispatch)
   })
 );

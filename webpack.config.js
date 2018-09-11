@@ -3,7 +3,6 @@ var webpack = require("webpack");
 var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-var os = require("os");
 
 module.exports = {
   entry: "./src/frontend/main.js",
@@ -63,13 +62,13 @@ module.exports = {
     contentBase: "./dist",
     compress: true,
     port: 8081,
-    host: "http://evanjon.es",
     proxy: {
-      "*": "http://evanjon.es:8080"
+      "*": "http://0.0.0.0:8080"
     }
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    // new BundleAnalyzerPlugin(),
     new OptimizeCSSAssetsPlugin(),
     new webpack.DefinePlugin({
       "process.env": {

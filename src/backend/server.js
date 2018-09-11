@@ -6,8 +6,8 @@ import Parser from "body-parser";
 import Helmet from "helmet";
 import API from "./api";
 
-let loc = process.cwd();
-let app = new Express();
+var loc = process.cwd();
+var app = new Express();
 
 app.use(CORS());
 app.use(Helmet());

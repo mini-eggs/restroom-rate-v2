@@ -1,19 +1,11 @@
 import { NEW_ERROR_MESSAGE, CLEAR_ERROR_MESSAGES } from "../constants/error";
 
-let initial = {
+var initial = {
   errors: []
 };
 
-export default (state = initial, action) => {
-  switch (action.type) {
-    case NEW_ERROR_MESSAGE: {
-      return Object.assign({}, state, { errors: [...state.errors, action.payload] });
-    }
-    case CLEAR_ERROR_MESSAGES: {
-      return Object.assign({}, state, { errors: [] });
-    }
-    default: {
-      return state;
-    }
-  }
+export default {
+  [NEW_ERROR_MESSAGE]: ({ state, payload }) => ({ errors: [...state.errors, payload] }),
+  [CLEAR_ERROR_MESSAGES]: () => ({ errors: [] }),
+  _: ({ store = initial }) => store
 };

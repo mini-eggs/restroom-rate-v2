@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 import sequelize from "../";
 import rate from "./rate";
 
-let user = sequelize.define("user", {
+var user = sequelize.define("user", {
   username: Sequelize.STRING
 });
 

@@ -1,7 +1,7 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import EnsureUser from "../containers/ensure-user";
 
-let account = component({
+var account = {
   render() {
     return (
       <div class="abs-full">
@@ -9,6 +9,6 @@ let account = component({
       </div>
     );
   }
-});
+};
 
 export default EnsureUser(account);

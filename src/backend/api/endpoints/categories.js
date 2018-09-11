@@ -1,6 +1,6 @@
 import Express from "express";
 
-let router = new Express.Router();
+var router = new Express.Router();
 
 router.get("/", (req, res) => {
   res.json([

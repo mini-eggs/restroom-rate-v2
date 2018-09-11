@@ -1,7 +1,7 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import UserConnect from "../containers/users";
 
-let welcome = component({
+var welcome = {
   mounted() {
     if (this.props.shouldCreateNewUser) {
       this.props.createNewUser();
@@ -17,6 +17,6 @@ let welcome = component({
       </div>
     );
   }
-});
+};
 
 export default UserConnect(welcome);

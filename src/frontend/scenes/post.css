@@ -1,0 +1,28 @@
+.post-single {
+}
+
+.post-single > div {
+  opacity: 0;
+}
+
+.post-single > div.loaded {
+  animation-name: FadeInUp;
+  animation-duration: 250ms;
+  animation-fill-mode: forwards;
+}
+
+.post-single img {
+  height: 35vh;
+  object-fit: cover;
+  width: 100%;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+}
+
+.post-single article {
+  padding: 15px;
+}
+
+.post-single article h1 {
+}

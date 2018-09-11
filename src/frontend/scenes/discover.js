@@ -1,15 +1,15 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import xhr from "../packages/xhr";
 import "./discover.css";
 
-let Post = component({
+var Post = {
   render() {
-    let { item } = this.props;
+    var { item } = this.props;
 
     return (
       <a href={`/discover/post/${item.id}`}>
         <button class="post">
-          <img src={item.image} />
+          <img style={{ backgroundImage: `url(${item.thumbnail})` }} src={item.image} />
           <div class="content">
             <h3>{item.name}</h3>
           </div>
@@ -17,9 +17,9 @@ let Post = component({
       </a>
     );
   }
-});
+};
 
-export default component({
+export default {
   data() {
     return { page: 0, posts: [] };
   },
@@ -34,7 +34,7 @@ export default component({
     this.setState(
       () => ({ loading: true }),
       async () => {
-        let posts = await xhr({ url: `/posts?page=${this.state.page}`, method: "get" });
+        var posts = await xhr({ url: `/posts?page=${this.state.page}`, method: "get" });
         this.setState(() => ({ posts, loading: false }));
       }
     );
@@ -49,4 +49,4 @@ export default component({
       </div>
     );
   }
-});
+};

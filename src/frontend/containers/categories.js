@@ -5,7 +5,7 @@ export default Connect(
   state => ({
     categories: state.categories.options
   }),
-  (state, dispatch) => ({
-    fetchCategories: fetchCategories(state, dispatch)
+  dispatch => ({
+    fetchCategories: fetchCategories(dispatch)
   })
 );

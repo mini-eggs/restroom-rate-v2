@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.star-input * {
+  cursor: pointer;
+}
+
 .star-input .active i {
   color: gold;
 }

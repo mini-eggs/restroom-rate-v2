@@ -7,7 +7,7 @@ class UserService {
   }
 
   static async generateUserWithRandomName() {
-    let username = this.chance.name({ prefix: true, nationality: "en" });
+    var username = this.chance.name({ prefix: true, nationality: "en" });
     return await user.create({ username });
   }
 }

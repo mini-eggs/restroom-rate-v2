@@ -1,30 +1,30 @@
-// import greenlet from "greenlet"; // may revisit
+// import greenvar from "greenlet"; // may revisit
 
-// let xhr = greenlet(({ url, method, props }) => {
-//   let base = process.env.BASE_URL;
-//   let port = process.env.PORT;
-//   let req = new XMLHttpRequest();
-//   req.open(method.toUpperCase(), `${base}:${port}${url}`, false); // sync -- greenlet has issues w/ parcel.
+// var xhr = greenlet(({ url, method, props }) => {
+//   var base = process.env.BASE_URL;
+//   var port = process.env.PORT;
+//   var req = new XMLHttpRequest();
+//   req.open(method.toUpperCase(), `${base}:${port}${url}`, false); // sync -- greenvar has issues w/ parcel.
 //   props && req.setRequestHeader("Content-Type", "application/json");
 //   req.send(props);
 //   return JSON.parse(req.responseText);
 // });
 
 // export default async ({ url, method, props }) => {
-//   let data = { url, method };
+//   var data = { url, method };
 //   if (props) data.props = JSON.stringify(props);
 //   return await xhr(data);
 // };
 
-let xhr = ({ url, method, props, headers }) => {
+var xhr = ({ url, method, props, headers }) => {
   return new Promise(resolve => {
-    let req = new XMLHttpRequest();
+    var req = new XMLHttpRequest();
     req.open(method.toUpperCase(), url);
     props && req.setRequestHeader("Content-Type", "application/json");
     req.onload = () => resolve(JSON.parse(req.responseText));
 
     if (headers) {
-      for (let key in headers) {
+      for (var key in headers) {
         req.setRequestHeader(key, headers[key]);
       }
     }
@@ -33,11 +33,11 @@ let xhr = ({ url, method, props, headers }) => {
   });
 };
 
-export let upload = async image => {
+export var upload = async image => {
   image = image.split("base64,");
   image = image[image.length - 1];
 
-  let headers = {
+  var headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
     Authorization: "Client-ID " + process.env.IMGUR_KEY

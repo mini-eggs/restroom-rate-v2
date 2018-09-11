@@ -1,8 +1,8 @@
 import { NEW_USER_CREATED, NEW_USER_REQUESTED } from "../constants/users";
 import xhr from "../packages/xhr";
 
-export let createNewUser = (state, dispatch) => async () => {
-  dispatch({ type: NEW_USER_REQUESTED });
-  let user = await xhr({ url: "/user", method: "post" });
-  dispatch({ type: NEW_USER_CREATED, payload: user });
+export var createNewUser = dispatch => async () => {
+  dispatch(NEW_USER_REQUESTED);
+  var user = await xhr({ url: "/user", method: "post" });
+  dispatch(NEW_USER_CREATED, user);
 };

@@ -1,16 +1,10 @@
 import { HAS_LOADED } from "../constants/categories";
 
-let initial = {
+var initial = {
   options: []
 };
 
-export default (state = initial, action) => {
-  switch (action.type) {
-    case HAS_LOADED: {
-      return Object.assign({}, state, { options: action.payload });
-    }
-    default: {
-      return state;
-    }
-  }
+export default {
+  [HAS_LOADED]: ({ payload }) => ({ options: payload }),
+  _: ({ store = initial }) => store
 };

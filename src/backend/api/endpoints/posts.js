@@ -1,12 +1,16 @@
 import Express from "express";
 import RateService from "../../services/rate";
 
-let router = new Express.Router();
+var router = new Express.Router();
+
+router.get("/single/:id", async (req, res) => {
+  res.json(await RateService.find({ id: req.params.id }));
+});
 
 router.get(["/", "/:category", "/:category/:page"], async (req, res) => {
-  let category = req.params.category || undefined;
-  let page = req.params.page || 0;
-  let limit = 15;
+  var category = req.params.category || undefined;
+  var page = req.params.page || 0;
+  var limit = 15;
   res.json(await RateService.query({ category, page, limit }));
 });
 

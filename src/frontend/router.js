@@ -1,9 +1,9 @@
-import { h, component } from "wigly";
+import { h } from "wigly";
 import navaid from "navaid";
 import Welcome from "./scenes/welcome";
 import "./router.css";
 
-let routes = [
+var routes = [
   { path: "/", component: () => Promise.resolve({ default: Welcome }) },
   { path: "/discover", component: () => import("./scenes/discover") },
   { path: "/discover/:category", component: () => import("./scenes/discover") },
@@ -13,17 +13,17 @@ let routes = [
   { path: "/account", component: () => import("./scenes/account") }
 ];
 
-let router = new navaid("/", () => router.route("/discover"));
+var router = new navaid("/", () => router.route("/discover"));
 
-export let WithRouter = Component => {
-  return component({
+export var WithRouter = Component => {
+  return {
     render() {
       return <Component router={router} {...this.props} {...this.children} />;
     }
-  });
+  };
 };
 
-export default component({
+export default {
   data() {
     return { component: null, params: {} };
   },
@@ -39,8 +39,8 @@ export default component({
     this.setState(
       () => ({ component: null, params: {} }),
       async () => {
-        let mod = await f();
-        let component = mod.default;
+        var mod = await f();
+        var component = mod.default;
         this.setState(() => ({ component, params }));
       }
     );
@@ -54,4 +54,4 @@ export default component({
       </div>
     );
   }
-});
+};
