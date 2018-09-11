@@ -1,7 +1,13 @@
 import { h } from "wigly";
+import ModalContainer from "../containers/modal";
 import "./header.css";
 
-export default {
+var Header = {
+  async onSearch() {
+    var SearchModal = await import("./search");
+    this.props.openModal(SearchModal.default);
+  },
+
   render() {
     return (
       <header>
@@ -9,10 +15,12 @@ export default {
         <button class="left" onclick={this.props.onDrawerToggle}>
           <i class="material-icons">sort</i>
         </button>
-        <button class="right">
+        <button class="right" onclick={this.onSearch}>
           <i class="material-icons">search</i>
         </button>
       </header>
     );
   }
 };
+
+export default ModalContainer(Header);

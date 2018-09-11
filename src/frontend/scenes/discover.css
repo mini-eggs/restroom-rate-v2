@@ -12,7 +12,6 @@
   animation-name: FadeInUp;
   animation-duration: 250ms;
   animation-fill-mode: forwards;
-  animation-delay: 250ms;
 }
 
 .list .post .content {

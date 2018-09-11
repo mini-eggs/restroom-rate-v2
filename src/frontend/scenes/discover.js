@@ -31,10 +31,12 @@ export default {
   fetch() {
     if (this.state.loading) return;
 
+    var req = xhr({ url: `/posts?page=${this.state.page}`, method: "get" });
+
     this.setState(
       () => ({ loading: true }),
       async () => {
-        var posts = await xhr({ url: `/posts?page=${this.state.page}`, method: "get" });
+        var posts = await req;
         this.setState(() => ({ posts, loading: false }));
       }
     );

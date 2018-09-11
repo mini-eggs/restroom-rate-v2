@@ -39,7 +39,7 @@ export default {
   },
 
   destroyed() {
-    this.state.listener.off("scroll", this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
   },
 
   handleScroll(e) {
