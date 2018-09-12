@@ -41,6 +41,8 @@ button {
   width: 100%;
   cursor: pointer;
   box-sizing: border-box;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 a {
@@ -57,33 +59,10 @@ a {
   background: transparent;
 }
 
-/* Mainly for in browser dev, this application is a primarily for mobile devices. */
-/* @media (min-width: 800px) {
-  html {
-    background: transparent;
-  }
-
-  body {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 100vh;
-    max-width: 400px;
-    max-height: 800px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    overflow: hidden;
-  }
-
-  main {
-    background: rgba(0, 0, 0, 0.04);
-    height: calc(800px - 128px);
-    overflow: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-} */
+input {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
 @keyframes FadeInUp {
   from {
@@ -93,5 +72,23 @@ a {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes SlideFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes SlideToBottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
   }
 }

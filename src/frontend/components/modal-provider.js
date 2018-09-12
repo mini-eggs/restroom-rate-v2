@@ -8,7 +8,7 @@ var ModalProvider = {
     return (
       <div>
         {Modal && <Modal />}
-        <div style={{ display: Modal ? "none" : "block" }}>{this.children}</div>
+        <div>{this.children}</div>
       </div>
     );
   }

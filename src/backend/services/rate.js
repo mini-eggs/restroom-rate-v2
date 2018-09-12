@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { Op } from "sequelize";
 import rate from "../database/models/rate";
 
 class RateService {
@@ -64,6 +65,13 @@ class RateService {
   static async find({ id }) {
     var post = await rate.find({ where: { id } });
     return RateService.format(post);
+  }
+
+  static async search({ name }) {
+    if (!name) return [];
+    var where = { [Op.or]: [{ name: { [Op.like]: `%${name}%` } }] };
+    var posts = await rate.findAll({ limit: 10, order: [["id", "DESC"]], where });
+    return posts.map(RateService.format);
   }
 }
 

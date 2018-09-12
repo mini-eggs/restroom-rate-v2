@@ -48,4 +48,11 @@ var Post = {
   }
 };
 
-export default PostContianer(Post);
+// TODO: Fix upstream. Without this our url param updates will not propagate.
+var ConnectedPost = PostContianer(Post);
+
+export default {
+  render() {
+    return <ConnectedPost {...this.props} />;
+  }
+};

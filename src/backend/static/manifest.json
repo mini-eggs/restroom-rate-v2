@@ -1,6 +1,9 @@
 {
   "name": "Restroom Rate",
-  "short_name": "Restroom Rate",
+  "short_name": "RestRate",
   "start_url": "/",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#400093",
+  "background_color": "#400093"
 }

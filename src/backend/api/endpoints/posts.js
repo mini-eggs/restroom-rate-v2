@@ -18,6 +18,10 @@ router.post("/", async (req, res) => {
   res.json(await RateService.create(req.body));
 });
 
+router.post("/search", async (req, res) => {
+  res.json(await RateService.search(req.body));
+});
+
 router.patch("/", (req, res) => {
   res.json({ msg: "Not yet complete." });
 });

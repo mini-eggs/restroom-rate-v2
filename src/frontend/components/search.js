@@ -1,24 +1,75 @@
 import { h } from "wigly";
 import ModalContainer from "../containers/modal";
+import debounce from "lodash/debounce";
+import xhr from "../packages/xhr";
+import "./search.css";
+
+var Post = {
+  mounted(el) {
+    this.updateValue(el);
+  },
+
+  updated(el) {
+    this.updateValue(el);
+  },
+
+  updateValue(el) {
+    el.innerHTML = this.props.item.name
+      .toLowerCase()
+      .trim()
+      .split(this.props.search.toLowerCase())
+      .join(`<span>${this.props.search.toLowerCase()}</span>`);
+  },
+
+  render() {
+    return <h1 />;
+  }
+};
 
 var Search = {
+  data() {
+    return {
+      class: "search-container",
+      abort: () => {},
+      posts: [],
+      search: ""
+    };
+  },
+
+  async onSearch(event) {
+    this.state.abort();
+    var val = event.target.value;
+    var req = xhr({ url: "/posts/search", method: "post", props: { name: val } });
+    this.setState({ abort: () => req.abort(), search: val });
+    this.setState({ posts: await req });
+  },
+
+  animateOut() {
+    var close = () => setTimeout(this.props.closeModal, 400);
+    this.setState({ class: "search-container out" }, close);
+  },
+
   render() {
     return (
-      <div
-        style={{
-          position: "fixed",
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column"
-        }}
-      >
-        <div>here we go</div>
-        <button onclick={this.props.closeModal}>close</button>
+      <div class={this.state.class}>
+        <button onclick={this.animateOut}>
+          <i class="material-icons">close</i>
+        </button>
+        <form>
+          <input
+            autofocus
+            autocomplete="off"
+            type="text"
+            name="search"
+            placeholder="Try 'Seattle' or 'Starbucks'"
+            oninput={debounce(this.onSearch, 250)}
+          />
+          {this.state.posts.map(post => (
+            <a onclick={this.animateOut} href={`/discover/post/${post.id}`}>
+              <Post item={post} search={this.state.search} />
+            </a>
+          ))}
+        </form>
       </div>
     );
   }

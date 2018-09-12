@@ -12,7 +12,7 @@
     "start:frontend": "webpack-dev-server --mode development --open --hot --inline --host 0.0.0.0 -r dotenv/config",
     "start:backend": "nodemon -w src/backend -q -r dotenv/config -r esm src/backend/main.js",
     "prod": "npm run setup && npm run prod:frontend && npm run prod:backend",
-    "prod:frontend": "webpack --mode production",
+    "prod:frontend": "webpack --mode production -r dotenv/config",
     "prod:backend": "NODE_ENV='production' node -r dotenv/config -r esm src/backend/main.js",
     "test": "npm run setup && npm run test:ava",
     "test:ava": "ava"

@@ -17,8 +17,9 @@
 // };
 
 var xhr = ({ url, method, props, headers }) => {
-  return new Promise(resolve => {
-    var req = new XMLHttpRequest();
+  var req = new XMLHttpRequest();
+
+  var promise = new Promise(resolve => {
     req.open(method.toUpperCase(), url);
     props && req.setRequestHeader("Content-Type", "application/json");
     req.onload = () => resolve(JSON.parse(req.responseText));
@@ -31,6 +32,8 @@ var xhr = ({ url, method, props, headers }) => {
 
     req.send(JSON.stringify(props));
   });
+
+  return Object.assign(promise, { abort: () => req.abort() });
 };
 
 export var upload = async image => {
