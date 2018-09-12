@@ -1,5 +1,5 @@
 import { h } from "wigly";
-import PostContianer from "../containers/post";
+import xhr from "../packages/xhr";
 import "./post.css";
 
 var Item = {
@@ -29,12 +29,13 @@ var Item = {
 };
 
 var Post = {
-  mounted() {
-    this.props.fetchPost(this.props.id);
+  data() {
+    return { post: null };
   },
 
-  destroyed() {
-    this.props.clearPost();
+  async mounted() {
+    var post = await xhr({ url: `/posts/single/${this.props.id}`, method: "get" });
+    this.setState({ post });
   },
 
   viewBigImage() {
@@ -43,16 +44,9 @@ var Post = {
 
   render() {
     return (
-      <div class="post-single">{this.props.post && <Item imageClick={this.viewBigImage} post={this.props.post} />}</div>
+      <div class="post-single">{this.state.post && <Item imageClick={this.viewBigImage} post={this.state.post} />}</div>
     );
   }
 };
 
-// TODO: Fix upstream. Without this our url param updates will not propagate.
-var ConnectedPost = PostContianer(Post);
-
-export default {
-  render() {
-    return <ConnectedPost {...this.props} />;
-  }
-};
+export default Post;

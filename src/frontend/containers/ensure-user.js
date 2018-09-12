@@ -1,25 +1,20 @@
 import { h } from "wigly";
 import { WithRouter } from "../router";
-import UserContainer from "./users";
-import ErrorConnect from "./error";
+import cache from "../packages/cache";
 
-export default Component => {
-  var EnsureUser = {
+export default Component =>
+  WithRouter({
     mounted() {
-      if (!this.props.user) {
+      if (!cache.user) {
         setTimeout(this.handleNoUser, 1); // next tick
       }
     },
 
     handleNoUser() {
-      this.props.newErrorMessage("You are not signed in.", { uri: "/", text: "Click here to create an account." });
-      this.props.router.route("/error");
+      this.props.router.route("/");
     },
 
     render() {
       return <Component {...this.props} {...this.children} />;
     }
-  };
-
-  return ErrorConnect(WithRouter(UserContainer(EnsureUser)));
-};
+  });

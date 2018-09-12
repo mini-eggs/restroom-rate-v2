@@ -1,19 +1,21 @@
 import { h } from "wigly";
 import StarInput from "../components/star-input";
 import EnsureUser from "../containers/ensure-user";
-import User from "../containers/users";
 import xhr, { upload } from "../packages/xhr";
+import cache from "../packages/cache";
 
 var Rate = {
   data() {
     return {
       name: "",
+      desc: "",
       image: undefined,
       uploaded: false,
       uploading: false,
       rating: 0,
       loading: false,
-      error: undefined
+      error: undefined,
+      user: cache.user
     };
   },
 
@@ -67,7 +69,7 @@ var Rate = {
       name: this.state.name,
       rating: this.state.rating,
       image: this.state.image,
-      user: this.props.user.id
+      user: this.state.user.id
     };
     var { error } = await xhr({ url: "/posts", method: "post", props });
     this.setState(() => ({ name: "", image: undefined, rating: 0, loading: false, error }));
@@ -95,9 +97,22 @@ var Rate = {
       <form onsubmit={this.handleSubmit}>
         {this.state.image && <img style={styles.image} src={this.state.image} />}
         {this.state.uploading && <div>Uploading to Imgur...</div>}
-        <input style={styles.input} type="file" onchange={this.handleImage} accept=".jpeg,.jpg,.png" />
-        <input style={styles.input} type="text" oninput={this.bind("name")} value={this.state.name} />
+        <input style={styles.input} type="file" onchange={this.handleImage} accept=".jpeg,.jpg,.png" name="image" />
+        <input
+          style={styles.input}
+          type="text"
+          oninput={this.bind("name")}
+          value={this.state.name}
+          placeholder="Title"
+        />
         <StarInput oninput={this.handleRating} length={5} />
+        <textarea
+          style={styles.input}
+          oninput={this.bind("desc")}
+          value={this.state.desc}
+          name="description"
+          placeholder="Description"
+        />
         <input style={styles.input} type="button" value="Submit" onclick={this.handleSubmit} />
       </form>
     );
@@ -125,13 +140,11 @@ var styles = {
     padding: "15px"
   },
   input: {
-    margin: "15px auto",
-    width: "100%"
+    margin: "15px auto"
   },
   image: {
-    maxWidth: "100%",
     margin: "0 auto 15px"
   }
 };
 
-export default EnsureUser(User(Rate));
+export default EnsureUser(Rate);

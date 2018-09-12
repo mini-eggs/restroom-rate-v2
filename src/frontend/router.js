@@ -9,11 +9,10 @@ var routes = [
   { path: "/discover/:category", component: () => import("./scenes/discover") },
   { path: "/discover/post/:id", component: () => import("./scenes/post") },
   { path: "/rate", component: () => import("./scenes/rate") },
-  { path: "/error", component: () => import("./scenes/error") },
   { path: "/account", component: () => import("./scenes/account") }
 ];
 
-var router = new navaid("/", () => router.route("/discover"));
+var router = new navaid("/", () => router.route("/"));
 
 export var WithRouter = Component => {
   return {

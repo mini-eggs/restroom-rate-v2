@@ -1,22 +1,33 @@
 import { h } from "wigly";
-import UserConnect from "../containers/users";
+import xhr from "../packages/xhr";
+import cache from "../packages/cache";
 
 var welcome = {
+  data() {
+    return { user: cache.user };
+  },
+
   mounted() {
-    if (this.props.shouldCreateNewUser) {
-      this.props.createNewUser();
+    if (!this.state.user) {
+      this.createNewUser();
     }
   },
 
+  async createNewUser() {
+    var user = await xhr({ url: "/user", method: "post" });
+    cache.user = user;
+    this.setState({ user });
+  },
+
   render() {
-    if (!this.props.user) return null;
+    if (!this.state.user) return null;
 
     return (
       <div class="abs-full">
-        <h2>Hi, {this.props.user.username}!</h2>
+        <h2>Hi, {this.state.user.username}!</h2>
       </div>
     );
   }
 };
 
-export default UserConnect(welcome);
+export default welcome;

@@ -30,9 +30,7 @@
     "mysql2": "^1.6.1",
     "navaid": "^1.0.0",
     "sequelize": "^4.38.0",
-    "wigly": "^0.1.9",
-    "wigly-store": "^0.1.9",
-    "wigly-store-connect": "^0.1.9"
+    "wigly": "^0.1.9"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

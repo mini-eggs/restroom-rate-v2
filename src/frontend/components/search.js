@@ -1,8 +1,10 @@
 import { h } from "wigly";
-import ModalContainer from "../containers/modal";
+import { WithRouter } from "../router";
 import debounce from "lodash/debounce";
 import xhr from "../packages/xhr";
 import "./search.css";
+
+var animationDuration = 400;
 
 var Post = {
   mounted(el) {
@@ -36,6 +38,12 @@ var Search = {
     };
   },
 
+  mounted(el) {
+    setTimeout(() => {
+      el.querySelector("input").focus();
+    }, animationDuration);
+  },
+
   async onSearch(event) {
     this.state.abort();
     var val = event.target.value;
@@ -44,15 +52,22 @@ var Search = {
     this.setState({ posts: await req });
   },
 
-  animateOut() {
-    var close = () => setTimeout(this.props.closeModal, 400);
-    this.setState({ class: "search-container out" }, close);
+  animateOut(url) {
+    return () => {
+      url && this.props.router.route(url);
+      var close = () => setTimeout(this.closeModal, animationDuration);
+      this.setState({ class: "search-container out" }, close);
+    };
+  },
+
+  closeModal() {
+    document.dispatchEvent(new CustomEvent("modal:close"));
   },
 
   render() {
     return (
       <div class={this.state.class}>
-        <button onclick={this.animateOut}>
+        <button onclick={this.animateOut()}>
           <i class="material-icons">close</i>
         </button>
         <form>
@@ -65,7 +80,7 @@ var Search = {
             oninput={debounce(this.onSearch, 250)}
           />
           {this.state.posts.map(post => (
-            <a onclick={this.animateOut} href={`/discover/post/${post.id}`}>
+            <a onclick={this.animateOut(`/discover/post/${post.id}`)}>
               <Post item={post} search={this.state.search} />
             </a>
           ))}
@@ -75,4 +90,4 @@ var Search = {
   }
 };
 
-export default ModalContainer(Search);
+export default WithRouter(Search);

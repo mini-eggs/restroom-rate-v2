@@ -1,11 +1,10 @@
 import { h } from "wigly";
-import ModalContainer from "../containers/modal";
 import "./header.css";
 
 var Header = {
   async onSearch() {
     var SearchModal = await import("./search");
-    this.props.openModal(SearchModal.default);
+    document.dispatchEvent(new CustomEvent("modal:open", { detail: SearchModal.default }));
   },
 
   render() {
@@ -23,4 +22,4 @@ var Header = {
   }
 };
 
-export default ModalContainer(Header);
+export default Header;

@@ -7,13 +7,11 @@ import "./main.css";
 export default {
   render() {
     return (
-      <div id="app">
+      <Router>
         <ModalProvider>
-          <Router>
-            <Nav />
-          </Router>
+          <Nav />
         </ModalProvider>
-      </div>
+      </Router>
     );
   }
 };

@@ -1,9 +1,28 @@
 import { h } from "wigly";
-import ModalContainer from "../containers/modal";
 
 var ModalProvider = {
+  data() {
+    return { modals: [] };
+  },
+
+  mounted() {
+    document.addEventListener("modal:open", this.open);
+    document.addEventListener("modal:close", this.close);
+  },
+
+  open(event) {
+    this.setState(({ modals }) => ({ modals: [...modals, event.detail] }));
+  },
+
+  close() {
+    this.setState(({ modals }) => {
+      modals.pop();
+      return { modals };
+    });
+  },
+
   render() {
-    var Modal = this.props.modal;
+    var Modal = this.state.modals[this.state.modals.length - 1];
 
     return (
       <div>
@@ -14,4 +33,4 @@ var ModalProvider = {
   }
 };
 
-export default ModalContainer(ModalProvider);
+export default ModalProvider;

@@ -1,12 +1,26 @@
 import { h } from "wigly";
-import CategoriesContainer from "../containers/categories";
+import xhr from "../packages/xhr";
+import cache from "../packages/cache";
 import "./drawer.css";
 
 var Drawer = {
-  mounted() {
-    if (this.props.categories.length < 1) {
-      this.props.fetchCategories();
+  data() {
+    return {
+      categories: cache.categories || [],
+      fetching: false
+    };
+  },
+
+  updated() {
+    if (this.state.categories.length < 1 && !this.state.fetching && this.props.active) {
+      this.setState({ fetching: true }, this.fetch);
     }
+  },
+
+  async fetch() {
+    var categories = await xhr({ url: "/categories", method: "get" });
+    cache.categories = categories;
+    this.setState({ categories, fetching: false });
   },
 
   render() {
@@ -20,7 +34,7 @@ var Drawer = {
           <div class="drawer-content">
             <img src={require("../assets/drawer-background.jpeg")} />
             <div onclick={this.props.onDrawerToggle}>
-              {this.props.categories.map(({ href, title }) => (
+              {this.state.categories.map(({ href, title }) => (
                 <div>
                   <a href={href}>{title}</a>
                 </div>
@@ -33,4 +47,9 @@ var Drawer = {
   }
 };
 
-export default CategoriesContainer(Drawer);
+export default {
+  render() {
+    // this fixes double content exist bug in wigly. ANNOYING FIX TODO
+    return <Drawer {...this.props}>{this.children}</Drawer>;
+  }
+};

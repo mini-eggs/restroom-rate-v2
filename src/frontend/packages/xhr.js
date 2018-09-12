@@ -1,21 +1,3 @@
-// import greenvar from "greenlet"; // may revisit
-
-// var xhr = greenlet(({ url, method, props }) => {
-//   var base = process.env.BASE_URL;
-//   var port = process.env.PORT;
-//   var req = new XMLHttpRequest();
-//   req.open(method.toUpperCase(), `${base}:${port}${url}`, false); // sync -- greenvar has issues w/ parcel.
-//   props && req.setRequestHeader("Content-Type", "application/json");
-//   req.send(props);
-//   return JSON.parse(req.responseText);
-// });
-
-// export default async ({ url, method, props }) => {
-//   var data = { url, method };
-//   if (props) data.props = JSON.stringify(props);
-//   return await xhr(data);
-// };
-
 var xhr = ({ url, method, props, headers }) => {
   var req = new XMLHttpRequest();
 
