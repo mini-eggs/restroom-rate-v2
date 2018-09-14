@@ -23,7 +23,7 @@ var welcome = {
     if (!this.state.user) return null;
 
     return (
-      <div class="abs-full">
+      <div>
         <h2>Hi, {this.state.user.username}!</h2>
       </div>
     );

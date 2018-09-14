@@ -1,8 +1,13 @@
 import { h } from "wigly";
+import "./modal-provider.css";
 
 var ModalProvider = {
   data() {
-    return { modals: [] };
+    return {
+      modal: null,
+      props: {},
+      transitioning: false
+    };
   },
 
   mounted() {
@@ -11,23 +16,24 @@ var ModalProvider = {
   },
 
   open(event) {
-    this.setState(({ modals }) => ({ modals: [...modals, event.detail] }));
+    if (this.state.modal) return;
+    var modal = event.detail.component;
+    var props = event.detail.props || {};
+    this.setState({ modal, props });
   },
 
   close() {
-    this.setState(({ modals }) => {
-      modals.pop();
-      return { modals };
-    });
+    this.setState({ modal: null, props: {} });
   },
 
   render() {
-    var Modal = this.state.modals[this.state.modals.length - 1];
+    var Modal = this.state.modal;
+    var props = this.state.props;
 
     return (
       <div>
-        {Modal && <Modal />}
         <div>{this.children}</div>
+        <div>{Modal && <Modal {...props} />}</div>
       </div>
     );
   }

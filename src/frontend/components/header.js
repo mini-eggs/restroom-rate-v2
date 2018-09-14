@@ -4,7 +4,7 @@ import "./header.css";
 var Header = {
   async onSearch() {
     var SearchModal = await import("./search");
-    document.dispatchEvent(new CustomEvent("modal:open", { detail: SearchModal.default }));
+    document.dispatchEvent(new CustomEvent("modal:open", { detail: { component: SearchModal.default } }));
   },
 
   render() {

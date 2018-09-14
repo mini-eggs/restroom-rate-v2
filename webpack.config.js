@@ -13,9 +13,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      wigly: path.resolve(__dirname, "node_modules/wigly/dist/es6.js"),
-      ["wigly-store"]: path.resolve(__dirname, "node_modules/wigly-store/dist/es6.js"),
-      ["wigly-store-connect"]: path.resolve(__dirname, "node_modules/wigly-store-connect/dist/es6.js")
+      wigly: path.resolve(__dirname, "node_modules/wigly/dist/es6.js")
     }
   },
   module: {

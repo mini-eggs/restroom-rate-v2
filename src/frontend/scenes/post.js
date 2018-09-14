@@ -1,5 +1,6 @@
 import { h } from "wigly";
 import xhr from "../packages/xhr";
+import StarInput from "../components/star-input";
 import "./post.css";
 
 var Item = {
@@ -22,6 +23,8 @@ var Item = {
         />
         <article>
           <h1>{this.props.post.name}</h1>
+          <StarInput value={this.props.post.rating} length={5} />
+          <p>{this.props.post.desc}</p>
         </article>
       </div>
     );
@@ -38,8 +41,10 @@ var Post = {
     this.setState({ post });
   },
 
-  viewBigImage() {
-    alert("todo");
+  async viewBigImage() {
+    var ImageViewer = await import("../components/image-viewer");
+    var detail = { component: ImageViewer.default, props: { post: this.state.post } };
+    document.dispatchEvent(new CustomEvent("modal:open", { detail }));
   },
 
   render() {

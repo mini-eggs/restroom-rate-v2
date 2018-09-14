@@ -1,5 +1,5 @@
 import { h } from "wigly";
-import { WithRouter } from "../router";
+import WithRouter from "../containers/with-router";
 import cache from "../packages/cache";
 
 export default Component =>

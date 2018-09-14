@@ -1,0 +1,86 @@
+import { h } from "wigly";
+import "./location-picker.css";
+
+var animationDuration = 400;
+
+var loadGoogleMap = () => {
+  return new Promise((resolve, reject) => {
+    if (typeof google !== "undefined") {
+      resolve();
+    } else {
+      var script = document.createElement("script");
+      script.setAttribute("src", "https://maps.googleapis.com/maps/api/js");
+      script.addEventListener("load", resolve);
+      script.addEventListener("error", resolve);
+      document.body.appendChild(script);
+    }
+  });
+};
+
+var location = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(loc => {
+      resolve({ lat: loc.coords.latitude, lng: loc.coords.longitude });
+    }, reject);
+  });
+};
+
+var ImageViewer = {
+  data() {
+    return { class: "location-picker" };
+  },
+
+  mounted(el) {
+    // for smooth transitions
+    setTimeout(this.setupMap, animationDuration);
+  },
+
+  async setupMap() {
+    try {
+      var [_, pos] = await Promise.all([loadGoogleMap(), location()]);
+      var el = document.querySelector("#map");
+      var map = new google.maps.Map(el, { center: pos, zoom: 18, disableDefaultUI: true });
+      var marker = new google.maps.Marker({ position: pos, draggable: true, map: map });
+      marker.addListener("dragend", this.handleEvent);
+      this.props.oninput(pos);
+    } catch (e) {
+      alert(e.toString());
+    }
+  },
+
+  handleEvent(event) {
+    var lat = event.latLng.lat();
+    var lng = event.latLng.lng();
+    this.props.oninput({ lat, lng });
+  },
+
+  onContinue() {
+    this.props.onconfirm();
+    this.animateOut();
+  },
+
+  animateOut() {
+    var close = () => setTimeout(this.closeModal, animationDuration);
+    this.setState({ class: "location-picker out" }, close);
+  },
+
+  closeModal() {
+    document.dispatchEvent(new CustomEvent("modal:close"));
+  },
+
+  render() {
+    return (
+      <div class={this.state.class}>
+        <div id="map" />
+        <button class="close" onclick={this.animateOut}>
+          <i class="material-icons">close</i>
+        </button>
+        <button class="continue" onclick={this.onContinue}>
+          Next
+        </button>
+      </div>
+    );
+  }
+};
+
+export default ImageViewer;

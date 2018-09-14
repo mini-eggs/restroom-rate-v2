@@ -24,5 +24,7 @@
   padding: 15px;
 }
 
-.post-single article h1 {
+.post-single article h1,
+.post-single article p {
+  margin: 15px 0;
 }

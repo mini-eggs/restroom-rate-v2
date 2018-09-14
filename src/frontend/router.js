@@ -1,6 +1,6 @@
 import { h } from "wigly";
-import navaid from "navaid";
 import Welcome from "./scenes/welcome";
+import WithRouter from "./containers/with-router";
 import "./router.css";
 
 var routes = [
@@ -12,45 +12,36 @@ var routes = [
   { path: "/account", component: () => import("./scenes/account") }
 ];
 
-var router = new navaid("/", () => router.route("/"));
-
-export var WithRouter = Component => {
-  return {
-    render() {
-      return <Component router={router} {...this.props} {...this.children} />;
-    }
-  };
-};
-
-export default {
+export default WithRouter({
   data() {
-    return { component: null, params: {} };
+    return {
+      component: null,
+      props: {}
+    };
   },
 
   mounted() {
     for (let { path, component } of routes) {
-      router.on(path, props => this.handleRoute(component, props));
+      this.props.router.on(path, this.handleRoute(component));
     }
-    router.listen();
+    this.props.router.listen();
   },
 
-  handleRoute(f, params) {
-    this.setState(
-      () => ({ component: null, params: {} }),
-      async () => {
-        var mod = await f();
-        var component = mod.default;
-        this.setState(() => ({ component, params }));
-      }
-    );
+  handleRoute(component) {
+    return props => {
+      this.setState({ component: null, props: {} }, async () => {
+        var file = await component();
+        this.setState({ component: file.default, props });
+      });
+    };
   },
 
   render() {
     return (
-      <div>
-        {this.children}
-        <main>{this.state.component && <this.state.component {...this.state.params} />}</main>
-      </div>
+      <main>
+        <div>{this.children}</div>
+        <div>{this.state.component && <this.state.component {...this.state.props} />}</div>
+      </main>
     );
   }
-};
+});

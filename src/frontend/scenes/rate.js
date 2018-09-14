@@ -1,21 +1,26 @@
 import { h } from "wigly";
+import FileInput from "../components/file-input";
 import StarInput from "../components/star-input";
 import EnsureUser from "../containers/ensure-user";
+import WithRouter from "../containers/with-router";
 import xhr, { upload } from "../packages/xhr";
 import cache from "../packages/cache";
+import "./rate.css";
 
 var Rate = {
   data() {
     return {
       name: "",
       desc: "",
+      lat: undefined,
+      lng: undefined,
       image: undefined,
       uploaded: false,
       uploading: false,
       rating: 0,
       loading: false,
       error: undefined,
-      user: cache.user
+      user: cache.user && cache.user.id
     };
   },
 
@@ -27,7 +32,7 @@ var Rate = {
     var uploaded = false;
 
     var file = event.target.files[0];
-    if (!file) return this.setState(() => ({ image: undefined, uploaded }));
+    if (!file) return;
 
     var reader = new FileReader();
 
@@ -51,28 +56,60 @@ var Rate = {
     this.setState(() => ({ image, uploaded: true, uploading: false }));
   },
 
-  handleSubmit(event) {
-    if (this.state.uploading || !this.state.uploaded) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.setState(() => ({ loading: true }), this.createNewRate);
-  },
-
   handleRating(rating) {
     this.setState(() => ({ rating }));
   },
 
+  handleSubmit(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (
+      this.state.name &&
+      this.state.desc &&
+      this.state.rating &&
+      !this.state.uploading &&
+      this.state.uploaded &&
+      this.state.image &&
+      this.state.user
+    ) {
+      this.openLocationModal();
+    }
+  },
+
+  async openLocationModal() {
+    var LocationPicker = await import("../components/location-picker");
+    var component = LocationPicker.default;
+    var props = { oninput: this.onLocationChange, onconfirm: this.onRequestComplete };
+    document.dispatchEvent(new CustomEvent("modal:open", { detail: { component, props } }));
+  },
+
+  onLocationChange({ lat, lng }) {
+    this.setState({ lat, lng });
+  },
+
+  onRequestComplete() {
+    if (
+      this.state.name &&
+      this.state.desc &&
+      this.state.rating &&
+      !this.state.uploading &&
+      this.state.uploaded &&
+      this.state.image &&
+      this.state.user &&
+      this.state.lat &&
+      this.state.lng
+    ) {
+      this.setState(() => ({ loading: true }), this.createNewRate);
+    }
+  },
+
   async createNewRate() {
-    var props = {
-      name: this.state.name,
-      rating: this.state.rating,
-      image: this.state.image,
-      user: this.state.user.id
-    };
-    var { error } = await xhr({ url: "/posts", method: "post", props });
-    this.setState(() => ({ name: "", image: undefined, rating: 0, loading: false, error }));
+    var { name, lat, lng, desc, rating, image, user } = this.state;
+    var data = await xhr({ url: "/posts", method: "post", props: { name, lat, lng, desc, rating, image, user } });
+    this.setState({ name: "", desc: "", image: undefined, rating: 0, loading: false, error: data.error }, () => {
+      data.id && this.props.router.route(`/discover/post/${data.id}`);
+    });
   },
 
   handleErrorContinue() {
@@ -80,71 +117,48 @@ var Rate = {
   },
 
   render() {
-    var loader = (
+    var { loading, error } = this.state;
+    return (
+      <div class="rating-container">
+        {loading && this.renderLoader()}
+        {!loading && error !== undefined && this.renderError()}
+        {!loading && error === undefined && this.renderForm()}
+      </div>
+    );
+  },
+
+  renderLoader() {
+    return (
       <div>
         <h2>Loading...</h2>
       </div>
     );
+  },
 
-    var error = (
-      <div>
+  renderError() {
+    return (
+      <div class="rate-error">
         <h2>{this.state.error}</h2>
         <button onclick={this.handleErrorContinue}>Continue</button>
       </div>
     );
+  },
 
-    var form = (
+  renderForm() {
+    return (
       <form onsubmit={this.handleSubmit}>
-        {this.state.image && <img style={styles.image} src={this.state.image} />}
-        {this.state.uploading && <div>Uploading to Imgur...</div>}
-        <input style={styles.input} type="file" onchange={this.handleImage} accept=".jpeg,.jpg,.png" name="image" />
-        <input
-          style={styles.input}
-          type="text"
-          oninput={this.bind("name")}
-          value={this.state.name}
-          placeholder="Title"
-        />
-        <StarInput oninput={this.handleRating} length={5} />
-        <textarea
-          style={styles.input}
-          oninput={this.bind("desc")}
-          value={this.state.desc}
-          name="description"
-          placeholder="Description"
-        />
-        <input style={styles.input} type="button" value="Submit" onclick={this.handleSubmit} />
+        <FileInput loading={this.state.uploading} image={this.state.image} oninput={this.handleImage} />
+        <div style={{ position: "relative", height: "7.5px" }}>
+          <div class="star-rate-container ">
+            <StarInput oninput={this.handleRating} length={5} />
+          </div>
+        </div>
+        <input type="text" oninput={this.bind("name")} value={this.state.name} placeholder="Title" />
+        <textarea oninput={this.bind("desc")} value={this.state.desc} name="description" placeholder="Description" />
+        <input type="button" value="Submit" onclick={this.handleSubmit} />
       </form>
     );
-
-    var rendered = (() => {
-      switch (true) {
-        case this.state.loading: {
-          return loader;
-        }
-        case this.state.error !== undefined: {
-          return error;
-        }
-        default: {
-          return form;
-        }
-      }
-    })();
-
-    return <div style={styles.container}>{rendered}</div>;
   }
 };
 
-var styles = {
-  container: {
-    padding: "15px"
-  },
-  input: {
-    margin: "15px auto"
-  },
-  image: {
-    margin: "0 auto 15px"
-  }
-};
-
-export default EnsureUser(Rate);
+export default WithRouter(EnsureUser(Rate));

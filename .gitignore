@@ -1,5 +1,6 @@
 dist
 data
+build
 .cache
 node_modules
 .env

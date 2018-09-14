@@ -1,5 +1,5 @@
 import { h } from "wigly";
-import { WithRouter } from "../router";
+import WithRouter from "../containers/with-router";
 import debounce from "lodash/debounce";
 import xhr from "../packages/xhr";
 import "./search.css";

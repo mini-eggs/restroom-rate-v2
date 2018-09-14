@@ -2,24 +2,7 @@ import { h } from "wigly";
 import xhr from "../packages/xhr";
 import "./discover.css";
 
-var Post = {
-  render() {
-    var { item } = this.props;
-
-    return (
-      <a href={`/discover/post/${item.id}`}>
-        <button class="post">
-          <img style={{ backgroundImage: `url(${item.thumbnail})` }} src={item.image} />
-          <div class="content">
-            <h3>{item.name}</h3>
-          </div>
-        </button>
-      </a>
-    );
-  }
-};
-
-export default {
+var Discover = {
   data() {
     return { page: 0, posts: [] };
   },
@@ -46,9 +29,18 @@ export default {
     return (
       <div class="list">
         {this.state.posts.map(item => (
-          <Post item={item} />
+          <a key={item.id} href={`/discover/post/${item.id}`}>
+            <button class="post">
+              <img style={{ backgroundImage: `url(${item.thumbnail})` }} src={item.image} />
+              <div class="content">
+                <h3>{item.name}</h3>
+              </div>
+            </button>
+          </a>
         ))}
       </div>
     );
   }
 };
+
+export default Discover;

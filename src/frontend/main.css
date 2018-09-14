@@ -12,17 +12,6 @@ body,
   text-rendering: optimizeLegibility;
 }
 
-.abs-full {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 h1,
 h2,
 h3,
@@ -75,8 +64,28 @@ input:not([type="file"]) {
   resize: vertical;
 }
 
+input[type="button"],
+input[type="submit"] {
+  background: #400093;
+  color: white;
+  font-weight: bold;
+}
+
 img {
   width: 100%;
+}
+
+p {
+  white-space: pre-line;
+}
+
+@keyframes FadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes FadeInUp {

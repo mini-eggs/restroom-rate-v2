@@ -9,19 +9,26 @@ class RateService {
       .max(50)
       .required();
 
+    var desc = Joi.string()
+      .min(25)
+      .max(5000)
+      .required();
+
     var rating = Joi.number()
       .integer()
       .min(1)
       .max(5)
       .required();
 
+    var lat = Joi.number().required();
+    var lng = Joi.number().required();
     var image = Joi.string().required();
 
     var user = Joi.number()
       .integer()
       .required();
 
-    return Joi.object().keys({ name, rating, image, user });
+    return Joi.object().keys({ name, desc, rating, image, user, lat, lng });
   }
 
   static collectErrorsToString(err) {
@@ -48,12 +55,12 @@ class RateService {
     }
   }
 
-  static format({ name, image, rating, id }) {
+  static format({ name, image, rating, id, desc, lat, lng }) {
     var thumbnail = image
       .replace(".png", "m.png")
       .replace(".jpg", "m.jpg")
       .replace(".jpeg", "m.jpeg");
-    return { name, image, rating, id, thumbnail };
+    return { name, desc, image, rating, id, thumbnail, lat, lng };
   }
 
   static async query({ limit, page }) {

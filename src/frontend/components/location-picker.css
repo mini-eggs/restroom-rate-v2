@@ -1,4 +1,4 @@
-.search-container {
+.location-picker {
   position: fixed;
   display: flex;
   width: 100%;
@@ -15,11 +15,11 @@
   background: #f2f2f2;
 }
 
-.search-container.out {
+.location-picker.out {
   animation-name: SlideToBottom;
 }
 
-.search-container:after {
+.location-picker:after {
   content: " ";
   height: 100px; /* safari overflow on scroll */
   position: absolute;
@@ -29,43 +29,46 @@
   background: #f2f2f2;
 }
 
-.search-container button {
+.location-picker > button.close {
+  color: black;
   position: absolute;
   top: 32px;
   right: 15px;
   transform: translateY(-50%);
   width: auto;
+  z-index: 1;
 }
 
-.search-container form {
-  padding-top: 64px;
-  width: 300px;
-  max-width: calc(100% - 15px * 2);
-  margin: 0 auto;
-  overflow-x: hidden;
-}
-
-.search-container input {
-  padding: 15px;
+.location-picker > button.continue {
+  background: #400093;
+  color: white;
+  font-weight: bold;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  width: auto;
+  padding: 10px 15px;
   border-radius: 4px;
-  outline: none !important;
-  background: white;
-  border: none;
+  bottom: 50px;
   font-size: 18px;
+  position: absolute;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  animation-name: FadeInUp;
+}
+
+.location-picker > button {
+  opacity: 0;
+  animation-name: FadeIn;
+  animation-delay: 1500ms;
   animation-duration: 250ms;
   animation-fill-mode: forwards;
-  margin-bottom: 10px;
+  z-index: 10;
 }
 
-.search-container h1 {
-  font-size: 18px;
-  padding: 10px 15px;
-  color: darkgrey;
-}
-
-.search-container h1 span {
-  font-size: 18px;
-  color: black;
+.location-picker #map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% + 100px); /* lol no branding */
+  width: 100%;
 }

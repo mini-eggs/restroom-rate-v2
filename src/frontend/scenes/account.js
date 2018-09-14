@@ -4,7 +4,7 @@ import EnsureUser from "../containers/ensure-user";
 var account = {
   render() {
     return (
-      <div class="abs-full">
+      <div>
         <h2>Account</h2>
       </div>
     );

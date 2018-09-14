@@ -62,7 +62,7 @@ export default {
 
   render() {
     return (
-      <div>
+      <div style={{ zIndex: 3, position: "relative" }}>
         <Header onDrawerToggle={this.onDrawerToggle} />
         <Drawer
           onDrawerToggle={this.onDrawerToggle}

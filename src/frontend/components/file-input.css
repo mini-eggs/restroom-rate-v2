@@ -1,0 +1,56 @@
+.file-input-container {
+  position: relative;
+  text-align: center;
+}
+
+.file-input-container label {
+  height: 40vh;
+  position: relative;
+  display: block;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.file-input-container label:after {
+  content: "Choose image";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+.file-input-container.loading label:before {
+  position: absolute;
+  content: " ";
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.75);
+  z-index: 1;
+}
+
+.file-input-container.loading label:after {
+  content: "Uploading...";
+  z-index: 2;
+}
+
+.file-input-container.has-image label:after {
+  display: none;
+}
+
+.file-input-container img {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  object-fit: cover;
+}
+
+.file-input-container input {
+  display: none;
+}
