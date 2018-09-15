@@ -1,9 +1,7 @@
 import { h } from "wigly";
 import xhr from "../packages/xhr";
-// import throttle from "lodash/throttle";
+import throttle from "lodash/throttle";
 import "./discover.css";
-
-var throttle = f => f;
 
 var Discover = {
   data() {
