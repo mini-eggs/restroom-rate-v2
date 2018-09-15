@@ -1,6 +1,7 @@
 import { h } from "wigly";
 import xhr from "../packages/xhr";
 import StarInput from "../components/star-input";
+import StaticMap from "../components/static-map";
 import "./post.css";
 
 var Item = {
@@ -16,15 +17,17 @@ var Item = {
     return (
       <div class={this.state.loaded && "loaded"}>
         <img
-          style={{ backgroundImage: `url(${this.props.post.thumbnail})` }}
+          style={{ backgroundImage: `url(${this.props.post.image.medium})` }}
           onclick={this.props.imageClick}
-          src={this.props.post.image}
+          src={this.props.post.image.large}
           onload={this.onImageLoad}
         />
         <article>
           <h1>{this.props.post.name}</h1>
           <StarInput value={this.props.post.rating} length={5} />
           <p>{this.props.post.desc}</p>
+          <h1>Location</h1>
+          <StaticMap position={this.props.post} />
         </article>
       </div>
     );

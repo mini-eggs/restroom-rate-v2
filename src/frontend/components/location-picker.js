@@ -1,21 +1,6 @@
 import { h } from "wigly";
 import "./location-picker.css";
-
-var animationDuration = 400;
-
-var loadGoogleMap = () => {
-  return new Promise((resolve, reject) => {
-    if (typeof google !== "undefined") {
-      resolve();
-    } else {
-      var script = document.createElement("script");
-      script.setAttribute("src", "https://maps.googleapis.com/maps/api/js");
-      script.addEventListener("load", resolve);
-      script.addEventListener("error", resolve);
-      document.body.appendChild(script);
-    }
-  });
-};
+import { animationDuration, loadGoogleMap } from "../constants";
 
 var location = () => {
   return new Promise((resolve, reject) => {
@@ -25,7 +10,7 @@ var location = () => {
   });
 };
 
-var ImageViewer = {
+var LocationPicker = {
   data() {
     return { class: "location-picker" };
   },
@@ -76,11 +61,11 @@ var ImageViewer = {
           <i class="material-icons">close</i>
         </button>
         <button class="continue" onclick={this.onContinue}>
-          Next
+          Continue
         </button>
       </div>
     );
   }
 };
 
-export default ImageViewer;
+export default LocationPicker;

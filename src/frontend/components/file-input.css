@@ -14,7 +14,7 @@
 }
 
 .file-input-container label:after {
-  content: "Choose image";
+  content: "Choose Image";
   position: absolute;
   top: 50%;
   left: 50%;

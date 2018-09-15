@@ -3,6 +3,7 @@ var webpack = require("webpack");
 var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+var OfflinePlugin = require("offline-plugin");
 
 module.exports = {
   entry: "./src/frontend/main.js",
@@ -29,7 +30,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg|jpeg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif|woff2)$/,
         use: [
           {
             loader: "file-loader",
@@ -68,6 +69,10 @@ module.exports = {
     }
   },
   plugins: [
+    new OfflinePlugin({
+      externals: ["/discover", "/discover/", "/rate", "/rate/", "/account", "/account/", "/"],
+      responseStrategy: "network-first"
+    }),
     new MiniCssExtractPlugin(),
     // new BundleAnalyzerPlugin(),
     new OptimizeCSSAssetsPlugin(),

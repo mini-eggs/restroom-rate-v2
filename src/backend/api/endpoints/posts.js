@@ -7,10 +7,14 @@ router.get("/single/:id", async (req, res) => {
   res.json(await RateService.find({ id: req.params.id }));
 });
 
-router.get(["/", "/:category", "/:category/:page"], async (req, res) => {
+router.get("/featured", async (req, res) => {
+  res.json(await RateService.query({ page: 0, limit: 3 }));
+});
+
+router.get(["/", "/:category"], async (req, res) => {
   var category = req.params.category || undefined;
-  var page = req.params.page || 0;
-  var limit = 15;
+  var page = req.query.page || 0;
+  var limit = 10;
   res.json(await RateService.query({ category, page, limit }));
 });
 

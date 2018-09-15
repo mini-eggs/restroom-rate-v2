@@ -56,11 +56,24 @@ class RateService {
   }
 
   static format({ name, image, rating, id, desc, lat, lng }) {
-    var thumbnail = image
+    var small = image
+      .replace(".png", "t.png")
+      .replace(".jpg", "t.jpg")
+      .replace(".jpeg", "t.jpeg");
+    var medium = image
       .replace(".png", "m.png")
       .replace(".jpg", "m.jpg")
       .replace(".jpeg", "m.jpeg");
-    return { name, desc, image, rating, id, thumbnail, lat, lng };
+    var large = image
+      .replace(".png", "l.png")
+      .replace(".jpg", "l.jpg")
+      .replace(".jpeg", "l.jpeg");
+    var huge = image
+      .replace(".png", "h.png")
+      .replace(".jpg", "h.jpg")
+      .replace(".jpeg", "h.jpeg");
+    image = { small, medium, large, huge, original: image };
+    return { name, desc, image, rating, id, lat, lng };
   }
 
   static async query({ limit, page }) {

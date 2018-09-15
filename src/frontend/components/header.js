@@ -1,4 +1,5 @@
 import { h } from "wigly";
+import WithRouter from "../containers/with-router";
 import "./header.css";
 
 var Header = {
@@ -10,7 +11,7 @@ var Header = {
   render() {
     return (
       <header>
-        <h1>Restroom Rate</h1>
+        <h1 onclick={() => this.props.router.route("/")}>Restroom Rate</h1>
         <button class="left" onclick={this.props.onDrawerToggle}>
           <i class="material-icons">sort</i>
         </button>
@@ -22,4 +23,4 @@ var Header = {
   }
 };
 
-export default Header;
+export default WithRouter(Header);

@@ -1,8 +1,10 @@
 import { h } from "wigly";
-import throttle from "lodash/throttle";
+// import throttle from "lodash/throttle";
 import Header from "./header";
 import Drawer from "./drawer";
 import "./nav.css";
+
+var throttle = f => f;
 
 var NavLinks = {
   render() {

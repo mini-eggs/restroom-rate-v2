@@ -1,7 +1,6 @@
 import { h } from "wigly";
 import "./image-viewer.css";
-
-var animationDuration = 400;
+import { animationDuration } from "../constants";
 
 var ImageViewer = {
   data() {
@@ -25,7 +24,7 @@ var ImageViewer = {
         <button onclick={this.animateOut}>
           <i class="material-icons">close</i>
         </button>
-        <img style={{ backgroundImage: `url(${post.thumbnail})` }} src={post.image} />
+        <img style={{ backgroundImage: `url(${post.image.medium})` }} src={post.image.large} />
       </div>
     );
   }

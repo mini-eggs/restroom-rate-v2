@@ -30,6 +30,7 @@ export default WithRouter({
   handleRoute(component) {
     return props => {
       this.setState({ component: null, props: {} }, async () => {
+        window.scrollTo(0, 0);
         var file = await component();
         this.setState({ component: file.default, props });
       });
