@@ -36,7 +36,7 @@ var FeaturedPosts = {
 
 var welcome = {
   data() {
-    return { user: cache.user };
+    return cache;
   },
 
   mounted() {
@@ -46,24 +46,22 @@ var welcome = {
   },
 
   async createNewUser() {
-    var user = await xhr({ url: "/user", method: "post" });
-    cache.user = user;
-    this.setState({ user });
+    cache.user = await xhr({ url: "/user", method: "post" });
+    this.setState(cache);
   },
 
   render() {
-    if (!this.state.user) return null;
+    if (!this.state.user) return;
 
     return (
       <div class="welcome-scene">
         <center>
           <h2>Hi, {this.state.user.username}!</h2>
           <p>
-            This name was likely auto generated for you (yes you already have an account!). You can change this on the
+            This name was likely auto generated for you. Yes, you already have an account! You can change this on the
             `Account` tab above.
           </p>
         </center>
-
         <article>
           <h2>Featured Posts</h2>
           <FeaturedPosts />

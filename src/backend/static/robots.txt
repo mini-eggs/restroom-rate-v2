@@ -1,0 +1,11 @@
+User-Agent: bender
+Disallow: /my_shiny_metal_ass
+
+User-Agent: *
+Allow: /
+Allow: /discover
+Allow: /discover/
+Allow: /rate
+Allow: /rate/
+Allow: /account
+Allow: /account/

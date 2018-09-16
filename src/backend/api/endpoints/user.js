@@ -11,8 +11,8 @@ router.post("/", async (req, res) => {
   res.json(await UserService.generateUserWithRandomName());
 });
 
-router.patch("/", (req, res) => {
-  res.json({ msg: "Not yet complete." });
+router.patch("/", async (req, res) => {
+  res.json(await UserService.updateUsername(req.body));
 });
 
 router.delete("/", (req, res) => {

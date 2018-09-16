@@ -16,25 +16,26 @@ export default WithRouter({
   data() {
     return {
       component: null,
+      path: undefined,
       props: {}
     };
   },
 
   mounted() {
     for (let { path, component } of routes) {
-      this.props.router.on(path, this.handleRoute(component));
+      this.props.router.on(path, props => this.handleRoute(component, props, path));
     }
     this.props.router.listen();
   },
 
-  handleRoute(component) {
-    return props => {
-      this.setState({ component: null, props: {} }, async () => {
-        window.scrollTo(0, 0);
-        var file = await component();
-        this.setState({ component: file.default, props });
-      });
-    };
+  handleRoute(component, props, path) {
+    if (path === this.state.path) return;
+
+    this.setState({ component: null, props: {} }, async () => {
+      window.scrollTo(0, 0);
+      var file = await component();
+      this.setState({ component: file.default, props, path });
+    });
   },
 
   render() {

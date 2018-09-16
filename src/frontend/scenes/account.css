@@ -1,0 +1,12 @@
+.account-scene {
+  padding: 10px;
+}
+
+.account-scene h2 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.account-scene input {
+  margin: 7.5px auto;
+}

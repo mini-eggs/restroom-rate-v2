@@ -8,13 +8,29 @@ var Discover = {
     return {
       page: 0,
       posts: [],
-      stop: false
+      stop: false,
+      listener: undefined
     };
   },
 
   mounted() {
     this.fetch();
-    window.onscroll = throttle(this.handleScroll, 50);
+    var listener = throttle(this.handleScroll, 50);
+    window.addEventListener("scroll", listener);
+    this.setState({ listener });
+  },
+
+  destroyed() {
+    window.removeEventListener("scroll", this.state.listener);
+  },
+
+  handleScroll() {
+    var scroll = (window.pageYOffset || document.scrollTop) - (document.clientTop || 0);
+    if (isNaN(scroll)) scroll = 0;
+
+    if (document.body.scrollHeight - scroll - window.innerHeight * 2 < 0) {
+      this.fetch(true);
+    }
   },
 
   fetch(incrementPage = false) {
@@ -32,15 +48,6 @@ var Discover = {
         stop: next.length < 1
       }));
     });
-  },
-
-  handleScroll() {
-    var scroll = (window.pageYOffset || document.scrollTop) - (document.clientTop || 0);
-    if (isNaN(scroll)) scroll = 0;
-
-    if (document.body.scrollHeight - scroll - window.innerHeight * 2 < 0) {
-      this.fetch(true);
-    }
   },
 
   render() {

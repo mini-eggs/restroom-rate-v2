@@ -45,6 +45,7 @@ export default {
   handleScroll(e) {
     var last = this.state.scroll;
     var scroll = (window.pageYOffset || document.scrollTop) - (document.clientTop || 0);
+    if (isNaN(scroll)) scroll = 0;
     var diff = Math.abs(scroll - last);
     var show = !(scroll > 50);
     this.setState({ scroll, show });

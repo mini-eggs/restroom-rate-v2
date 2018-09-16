@@ -23,13 +23,16 @@
     "compression": "^1.7.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "express-async-errors": "^3.0.0",
     "helmet": "^3.13.0",
     "joi": "^13.6.0",
+    "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.10",
     "mysql2": "^1.6.1",
     "navaid": "^1.0.0",
     "offline-plugin": "^5.0.5",
     "sequelize": "^4.38.0",
+    "spdy": "^3.4.7",
     "wigly": "^0.1.9"
   },
   "devDependencies": {

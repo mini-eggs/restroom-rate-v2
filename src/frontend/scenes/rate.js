@@ -20,7 +20,7 @@ var Rate = {
       rating: 0,
       loading: false,
       error: undefined,
-      user: cache.user && cache.user.id
+      user: cache.user
     };
   },
 
@@ -106,10 +106,9 @@ var Rate = {
 
   async createNewRate() {
     var { name, lat, lng, desc, rating, image, user } = this.state;
-    var data = await xhr({ url: "/posts", method: "post", props: { name, lat, lng, desc, rating, image, user } });
-    this.setState({ name: "", desc: "", image: undefined, rating: 0, loading: false, error: data.error }, () => {
-      data.id && this.props.router.route(`/discover/post/${data.id}`);
-    });
+    var props = { name, lat, lng, desc, rating, image, token: user.token };
+    var data = await xhr({ url: "/posts", method: "post", props });
+    this.props.router.route(`/discover/post/${data.id}`);
   },
 
   handleErrorContinue() {

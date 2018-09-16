@@ -1,5 +1,6 @@
-import Clusterer from "./cluster";
+import { createServer } from "spdy";
 import app from "./server";
+import Clusterer from "./cluster";
 import database from "./database";
 
 database.sync();

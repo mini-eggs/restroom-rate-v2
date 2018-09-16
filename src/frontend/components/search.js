@@ -15,11 +15,20 @@ var Post = {
   },
 
   updateValue(el) {
-    el.innerHTML = this.props.item.name
+    var special = "λ";
+    var name = this.props.item.name.trim();
+    var search = this.props.search.trim().toLowerCase();
+    var fill = Array.from({ length: search.length }).map(() => special);
+    var str = name
       .toLowerCase()
-      .trim()
-      .split(this.props.search.toLowerCase())
-      .join(`<span>${this.props.search.toLowerCase()}</span>`);
+      .split(search)
+      .join(fill.join(""));
+
+    var final = "";
+    for (var e = 0; e < name.length; e++) {
+      final += str[e] !== special ? name[e] : `<span>${name[e]}</span>`;
+    }
+    el.innerHTML = final;
   },
 
   render() {
