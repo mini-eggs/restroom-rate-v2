@@ -13,3 +13,11 @@ export var loadGoogleMap = () => {
     }
   });
 };
+
+export var getUserLocation = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(loc => {
+      resolve({ lat: loc.coords.latitude, lng: loc.coords.longitude });
+    }, reject);
+  });
+};

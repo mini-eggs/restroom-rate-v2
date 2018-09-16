@@ -7,11 +7,15 @@ export default {
     await loadGoogleMap();
     var position = this.props.position;
     var opts = { center: position, zoom: 18, disableDefaultUI: true };
-    var map = new google.maps.Map(el, opts);
+    var map = new google.maps.Map(el.querySelector("#map"), opts);
     new google.maps.Marker({ position, map });
   },
 
   render() {
-    return <div class="static-map" />;
+    return (
+      <div class="static-map">
+        <div id="map" />
+      </div>
+    );
   }
 };

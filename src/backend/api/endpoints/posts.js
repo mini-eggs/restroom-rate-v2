@@ -22,6 +22,18 @@ router.post("/", async (req, res) => {
   res.json(await RateService.create(req.body));
 });
 
+router.post("/author", async (req, res) => {
+  res.json(await RateService.getPostByAuthor(req.body));
+});
+
+router.post("/like", async (req, res) => {
+  res.json(await RateService.likePost(req.body));
+});
+
+router.post("/nearby", async (req, res) => {
+  res.json(await RateService.nearby(req.body));
+});
+
 router.post("/search", async (req, res) => {
   res.json(await RateService.search(req.body));
 });

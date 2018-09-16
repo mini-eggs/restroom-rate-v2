@@ -28,3 +28,19 @@
 .post-single article p {
   margin: 15px 0;
 }
+
+.post-single i {
+  color: #400093;
+}
+
+.post-single .actions {
+  display: flex;
+  align-items: center;
+}
+
+.post-single .actions > * {
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}

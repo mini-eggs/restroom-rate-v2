@@ -29,7 +29,9 @@ export default WithRouter({
   },
 
   handleRoute(component, props, path) {
-    if (path === this.state.path) return;
+    if (path === this.state.path && JSON.stringify(props) === JSON.stringify(this.state.props)) {
+      return;
+    }
 
     this.setState({ component: null, props: {} }, async () => {
       window.scrollTo(0, 0);

@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import sequelize from "../";
+import action from "./action";
 
 var rate = sequelize.define("rate", {
   name: Sequelize.STRING,
@@ -9,5 +10,8 @@ var rate = sequelize.define("rate", {
   lat: Sequelize.FLOAT,
   lng: Sequelize.FLOAT
 });
+
+rate.hasMany(action, { as: "action" });
+action.belongsTo(rate, { as: "rate" });
 
 export default rate;

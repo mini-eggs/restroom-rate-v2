@@ -1,14 +1,6 @@
 import { h } from "wigly";
+import { animationDuration, loadGoogleMap, getUserLocation } from "../constants";
 import "./location-picker.css";
-import { animationDuration, loadGoogleMap } from "../constants";
-
-var location = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(loc => {
-      resolve({ lat: loc.coords.latitude, lng: loc.coords.longitude });
-    }, reject);
-  });
-};
 
 var LocationPicker = {
   data() {
@@ -22,7 +14,7 @@ var LocationPicker = {
 
   async setupMap() {
     try {
-      var [_, pos] = await Promise.all([loadGoogleMap(), location()]);
+      var [_, pos] = await Promise.all([loadGoogleMap(), getUserLocation()]);
       var el = document.querySelector("#map");
       var map = new google.maps.Map(el, { center: pos, zoom: 18, disableDefaultUI: true });
       var marker = new google.maps.Marker({ position: pos, draggable: true, map: map });

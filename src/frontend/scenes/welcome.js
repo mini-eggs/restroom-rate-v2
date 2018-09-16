@@ -1,4 +1,6 @@
 import { h } from "wigly";
+import PostList from "../components/post-list";
+import Note from "../components/note";
 import xhr from "../packages/xhr";
 import cache from "../packages/cache";
 import "./welcome.css";
@@ -16,21 +18,7 @@ var FeaturedPosts = {
   },
 
   render() {
-    if (!this.state.posts.lenth < 1) return null;
-    return (
-      <div class="list" style={{ margin: "-10px", padding: 0, marginTop: "15px" }}>
-        {this.state.posts.map(item => (
-          <a key={item.id} href={`/discover/post/${item.id}`}>
-            <button class="post">
-              <img style={{ backgroundImage: `url(${item.image.medium})` }} src={item.image.medium} />
-              <div class="content">
-                <h3>{item.name}</h3>
-              </div>
-            </button>
-          </a>
-        ))}
-      </div>
-    );
+    return <PostList posts={this.state.posts} />;
   }
 };
 
@@ -55,17 +43,15 @@ var welcome = {
 
     return (
       <div class="welcome-scene">
-        <center>
-          <h2>Hi, {this.state.user.username}!</h2>
-          <p>
-            This name was likely auto generated for you. Yes, you already have an account! You can change this on the
-            `Account` tab above.
-          </p>
-        </center>
-        <article>
-          <h2>Featured Posts</h2>
-          <FeaturedPosts />
-        </article>
+        <Note
+          title={`Hi, ${this.state.user.username}!`}
+          body="This name was likely auto generated for you. Yes, you already have an account! You can change this on the `Account` tab above."
+        />
+        <Note
+          title="Featured Posts"
+          body="Navigate to our Discover tab to view more, or open up the drawer and choose from specific categories and regions."
+        />
+        <FeaturedPosts />
       </div>
     );
   }

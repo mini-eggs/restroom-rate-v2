@@ -1,6 +1,9 @@
 import Joi from "joi";
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
+import db from "../database";
+import * as queries from "../queries";
 import RateModel from "../database/models/rate";
+import ActionModel from "../database/models/action";
 import UserService from "./user";
 
 class RateService {
@@ -29,9 +32,9 @@ class RateService {
     return err.details.map(({ message }) => message).join(", ") + ".";
   }
 
-  static validate(props) {
+  static validate(props, rules) {
     return new Promise((resolve, reject) => {
-      Joi.validate(props, RateService.rules, (err, value) => {
+      Joi.validate(props, rules, (err, value) => {
         if (err) {
           return reject({ error: RateService.collectErrorsToString(err) });
         }
@@ -41,15 +44,15 @@ class RateService {
   }
 
   static async create(props) {
-    await RateService.validate(props);
+    await RateService.validate(props, RateService.rules);
     var user = await UserService.getUserFromToken(props.token);
-    return await RateModel.create({ ...props, user });
+    return await RateModel.create({ ...props, userId: user.id });
     // This is how you would query for the user and all their rates.
     // var user = await UserService.getUserFromToken(props.token);
     // return await UserModel.findOne({ where: { id: user.id }, include: [{ model: RateModel, as: "rate" }] });
   }
 
-  static format({ name, image, rating, id, desc, lat, lng }) {
+  static format({ name, image, rating, id, desc, lat, lng, action = [] }) {
     var small = image
       .replace(".png", "t.png")
       .replace(".jpg", "t.jpg")
@@ -67,7 +70,7 @@ class RateService {
       .replace(".jpg", "h.jpg")
       .replace(".jpeg", "h.jpeg");
     image = { small, medium, large, huge, original: image };
-    return { name, desc, image, rating, id, lat, lng };
+    return { name, desc, image, rating, id, lat, lng, likeCount: action.length };
   }
 
   static async query({ limit, page }) {
@@ -77,7 +80,7 @@ class RateService {
   }
 
   static async find({ id }) {
-    var post = await RateModel.find({ where: { id } });
+    var post = await RateModel.find({ where: { id }, include: [{ model: ActionModel, as: "action" }] });
     return RateService.format(post);
   }
 
@@ -86,6 +89,40 @@ class RateService {
     var where = { [Op.or]: [{ name: { [Op.like]: `%${name}%` } }] };
     var posts = await RateModel.findAll({ limit: 10, order: [["id", "DESC"]], where });
     return posts.map(RateService.format);
+  }
+
+  static async likePost({ token, post }) {
+    // get full datas
+    var [user, rate] = await Promise.all([
+      UserService.getUserFromToken(token),
+      RateModel.find({ where: { id: post } })
+    ]);
+
+    // check if it has already been liked by this user
+    var action = await ActionModel.findOne({ where: { userId: user.id, rateId: rate.id } });
+    if (action) return action;
+
+    // like it
+    return await ActionModel.create({ type: "like", userId: user.id, rateId: rate.id });
+  }
+
+  static async getPostByAuthor({ token }) {
+    var user = await UserService.getUserFromToken(token);
+    var posts = await RateModel.findAll({ where: { userId: user.id } });
+    return posts.map(this.format);
+  }
+
+  static get nearbyRules() {
+    var lat = Joi.number().required();
+    var lng = Joi.number().required();
+    return Joi.object().keys({ lat, lng });
+  }
+
+  static async nearby({ lat, lng }) {
+    await this.validate({ lat, lng }, this.nearbyRules); // ensure no sql injection
+    var distance = 25;
+    var posts = await db.query(queries.nearby({ lat, lng, distance }), { type: QueryTypes.SELECT });
+    return posts.map(this.format);
   }
 }
 

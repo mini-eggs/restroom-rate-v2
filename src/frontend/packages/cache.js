@@ -1,4 +1,4 @@
-var LS_KEY = "RestroomRateV1";
+var LS_KEY = "RestroomRateV2";
 
 var cache = new Proxy(JSON.parse(localStorage.getItem(LS_KEY) || "{}"), {
   set: (obj, key, val) => {

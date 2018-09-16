@@ -42,9 +42,9 @@
 
 .rating-container textarea {
   min-height: 20vh;
-  margin: 7.5px auto;
+  margin: 0 auto 10px;
 }
 
 .rating-container input {
-  margin: 7.5px auto;
+  margin: 0 auto 10px;
 }

@@ -1,4 +1,6 @@
 import { h } from "wigly";
+import PostList from "../components/post-list";
+import Note from "../components/note";
 import xhr from "../packages/xhr";
 import throttle from "lodash/throttle";
 import "./discover.css";
@@ -50,19 +52,21 @@ var Discover = {
     });
   },
 
+  async onViewNearby() {
+    var NearbyMap = await import("../components/neaby-map");
+    document.dispatchEvent(new CustomEvent("modal:open", { detail: { component: NearbyMap.default } }));
+  },
+
   render() {
     return (
-      <div class="list">
-        {this.state.posts.map(item => (
-          <a key={item.id} href={`/discover/post/${item.id}`}>
-            <button class="post">
-              <img style={{ backgroundImage: `url(${item.image.medium})` }} src={item.image.medium} />
-              <div class="content">
-                <h3>{item.name}</h3>
-              </div>
-            </button>
-          </a>
-        ))}
+      <div class="discover">
+        <Note
+          title="Discover"
+          body="You're viewing a list of the most recent Restoom Rates submitted."
+          action="Click here to view Restroom Rates near you."
+          onaction={this.onViewNearby}
+        />
+        <PostList posts={this.state.posts} />
       </div>
     );
   }

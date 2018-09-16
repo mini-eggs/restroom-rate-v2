@@ -1,4 +1,5 @@
 import { h } from "wigly";
+import Note from "../components/note";
 import FileInput from "../components/file-input";
 import StarInput from "../components/star-input";
 import EnsureUser from "../containers/ensure-user";
@@ -145,17 +146,23 @@ var Rate = {
 
   renderForm() {
     return (
-      <form onsubmit={this.handleSubmit}>
-        <FileInput loading={this.state.uploading} image={this.state.image} oninput={this.handleImage} />
-        <div style={{ position: "relative", height: "7.5px" }}>
-          <div class="star-rate-container ">
-            <StarInput oninput={this.handleRating} length={5} />
+      <div>
+        <Note
+          title="Create"
+          body={`Welcome, ${this.state.user.username}. Hope you have a blast creating your first Restroom Rate.`}
+        />
+        <form onsubmit={this.handleSubmit}>
+          <FileInput loading={this.state.uploading} image={this.state.image} oninput={this.handleImage} />
+          <div style={{ position: "relative", height: "10px" }}>
+            <div class="star-rate-container ">
+              <StarInput oninput={this.handleRating} length={5} />
+            </div>
           </div>
-        </div>
-        <input type="text" oninput={this.bind("name")} value={this.state.name} placeholder="Title" />
-        <textarea oninput={this.bind("desc")} value={this.state.desc} name="description" placeholder="Description" />
-        <input type="button" value="Submit" onclick={this.handleSubmit} />
-      </form>
+          <input type="text" oninput={this.bind("name")} value={this.state.name} placeholder="Title" />
+          <textarea oninput={this.bind("desc")} value={this.state.desc} name="description" placeholder="Description" />
+          <input type="button" value="Submit" onclick={this.handleSubmit} />
+        </form>
+      </div>
     );
   }
 };

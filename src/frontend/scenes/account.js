@@ -1,4 +1,6 @@
 import { h } from "wigly";
+import PostList from "../components/post-list";
+import Note from "../components/note";
 import EnsureUser from "../containers/ensure-user";
 import cache from "../packages/cache";
 import xhr from "../packages/xhr";
@@ -16,7 +18,30 @@ var Loader = {
   }
 };
 
-var account = {
+var YourPosts = {
+  data() {
+    return { posts: [] };
+  },
+
+  async mounted() {
+    var posts = await xhr({ url: `/posts/author`, method: "post", props: this.props });
+    this.setState({ posts });
+  },
+
+  render() {
+    return (
+      <div>
+        {this.state.posts.length > 0 ? (
+          <PostList posts={this.state.posts} />
+        ) : (
+          <Note title="Oops!" body="Looks like you haven't created a post yet." />
+        )}
+      </div>
+    );
+  }
+};
+
+var Account = {
   data() {
     return { ...cache.user, loading: false };
   },
@@ -38,9 +63,7 @@ var account = {
   render() {
     return (
       <div class="account-scene">
-        <center>
-          <h2>Account</h2>
-        </center>
+        <Note title="Account" body="Update your account details." />
         {!this.state.loading ? (
           <form onsubmit={this.handleSubmit}>
             <input type="text" oninput={this.handleUsernameInput} placeholder="Username" />
@@ -49,9 +72,11 @@ var account = {
         ) : (
           <Loader />
         )}
+        <Note title="Your Posts" body="Here's a list of your posts." />
+        <YourPosts token={this.state.token} />
       </div>
     );
   }
 };
 
-export default EnsureUser(account);
+export default EnsureUser(Account);
