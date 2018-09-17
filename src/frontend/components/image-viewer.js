@@ -24,7 +24,7 @@ var ImageViewer = {
         <button onclick={this.animateOut}>
           <i class="material-icons">close</i>
         </button>
-        <img style={{ backgroundImage: `url(${post.image.medium})` }} src={post.image.large} />
+        <img style={{ backgroundImage: `url(${post.image.large})` }} src={post.image.original} />
       </div>
     );
   }

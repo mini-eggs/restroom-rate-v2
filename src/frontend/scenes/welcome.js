@@ -7,13 +7,12 @@ import "./welcome.css";
 
 var FeaturedPosts = {
   data() {
-    return { posts: cache.featured || [] };
+    return { posts: [] };
   },
 
   async mounted() {
     if (this.state.posts.length > 0) return;
     const posts = await xhr({ url: "/posts/featured", method: "get" });
-    cache.featured = posts;
     this.setState({ posts });
   },
 

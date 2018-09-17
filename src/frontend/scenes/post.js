@@ -5,7 +5,7 @@ import StaticMap from "../components/static-map";
 import WithRouter from "../containers/with-router";
 import cache from "../packages/cache";
 import { isTransitioning } from "../components/shared-transition-provider";
-import { animationDuration, copyText } from "../constants";
+import { copyText } from "../constants";
 import "./post.css";
 
 var Item = {
@@ -18,7 +18,7 @@ var Item = {
 
   mounted(el) {
     if (isTransitioning()) {
-      setTimeout(() => this.startTransition(el), 1);
+      setTimeout(() => this.startTransition(el), 1); // next tick
     }
 
     document.addEventListener("shared-transition:client:end", this.handleSharedAnimationEnd);
@@ -104,9 +104,7 @@ var Post = {
   mounted() {
     cache.selectedRate = null;
 
-    if (this.state.post) {
-      setTimeout(this.fetch, animationDuration);
-    } else {
+    if (!this.state.post) {
       this.fetch();
     }
   },
