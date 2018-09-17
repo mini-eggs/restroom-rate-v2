@@ -23,3 +23,12 @@ export var getUserLocation = () => {
 };
 
 export var sleep = t => new Promise(r => setTimeout(r, t));
+
+export var copyText = text => {
+  var el = document.createElement("input");
+  el.value = `${text} ${location.href}`;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};

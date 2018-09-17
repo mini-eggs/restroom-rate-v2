@@ -11,6 +11,7 @@ var Discover = {
       page: 0,
       posts: [],
       stop: false,
+      loading: false,
       listener: undefined
     };
   },
@@ -42,7 +43,7 @@ var Discover = {
     var page = this.state.page + increment;
     var req = xhr({ url: `/posts?page=${page}`, method: "get" });
 
-    this.setState({ page }, async () => {
+    this.setState({ page, loading: true }, async () => {
       var next = await req;
       this.setState(({ posts }) => ({
         posts: [...posts, ...next],

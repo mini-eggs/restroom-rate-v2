@@ -1,5 +1,6 @@
 import { h } from "wigly";
 import Welcome from "./scenes/welcome";
+import Post from "./scenes/post"; // For slow 3g shared animation to be smooth.
 import WithRouter from "./containers/with-router";
 import "./router.css";
 
@@ -7,7 +8,8 @@ var routes = [
   { path: "/", component: () => Promise.resolve({ default: Welcome }) },
   { path: "/discover", component: () => import("./scenes/discover") },
   { path: "/discover/:category", component: () => import("./scenes/discover") },
-  { path: "/discover/post/:id", component: () => import("./scenes/post") },
+  // { path: "/discover/post/:id", component: () => import("./scenes/post") },
+  { path: "/discover/post/:id", component: () => Promise.resolve({ default: Post }) },
   { path: "/rate", component: () => import("./scenes/rate") },
   { path: "/account", component: () => import("./scenes/account") }
 ];

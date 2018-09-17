@@ -2,26 +2,45 @@ import { h } from "wigly";
 import xhr from "../packages/xhr";
 import StarInput from "../components/star-input";
 import StaticMap from "../components/static-map";
-import "./post.css";
 import WithRouter from "../containers/with-router";
 import cache from "../packages/cache";
-
-var copyText = text => {
-  var el = document.createElement("input");
-  el.value = `${text} ${location.href}`;
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand("copy");
-  document.body.removeChild(el);
-};
+import { isTransitioning } from "../components/shared-transition-provider";
+import { animationDuration, copyText } from "../constants";
+import "./post.css";
 
 var Item = {
   data() {
-    return { loaded: false };
+    return {
+      loaded: false,
+      listener: null
+    };
   },
 
-  onImageLoad() {
+  mounted(el) {
+    if (isTransitioning()) {
+      setTimeout(() => this.startTransition(el), 1);
+    }
+
+    document.addEventListener("shared-transition:client:end", this.handleSharedAnimationEnd);
+  },
+
+  destroyed() {
+    document.removeEventListener("shared-transition:client:end", this.handleSharedAnimationEnd);
+  },
+
+  handleSharedAnimationEnd() {
     this.setState({ loaded: true });
+  },
+
+  startTransition(el) {
+    var pos = el.firstChild.getBoundingClientRect();
+    document.dispatchEvent(new CustomEvent("shared-transition:end", { detail: { pos } }));
+  },
+
+  onImageLoad(event) {
+    if (!isTransitioning()) {
+      this.setState({ loaded: true });
+    }
   },
 
   onShare() {
@@ -54,22 +73,24 @@ var Item = {
           src={this.props.post.image.large}
           onload={this.onImageLoad}
         />
-        <article>
-          <div class="actions">
-            <i class="icon" onclick={this.onShare}>
-              share
-            </i>
-            <i class="icon" onclick={this.onLike}>
-              thumb_up
-            </i>
-            <div>{this.props.post.likeCount} like(s)</div>
-          </div>
-          <h1>{this.props.post.name}</h1>
-          <StarInput value={this.props.post.rating} length={5} />
-          <p>{this.props.post.desc}</p>
-          <h1>Location</h1>
-          <StaticMap position={this.props.post} />
-        </article>
+        {this.state.loaded && (
+          <article>
+            <div class="actions">
+              <i class="icon" onclick={this.onShare}>
+                share
+              </i>
+              <i class="icon" onclick={this.onLike}>
+                thumb_up
+              </i>
+              <div>{this.props.post.likeCount} like(s)</div>
+            </div>
+            <h1>{this.props.post.name}</h1>
+            <StarInput value={this.props.post.rating} length={5} />
+            <p>{this.props.post.desc}</p>
+            <h1>Location</h1>
+            <StaticMap position={this.props.post} />
+          </article>
+        )}
       </div>
     );
   }
@@ -77,11 +98,17 @@ var Item = {
 
 var Post = {
   data() {
-    return { post: null };
+    return { post: cache.selectedRate };
   },
 
   mounted() {
-    this.fetch();
+    cache.selectedRate = null;
+
+    if (this.state.post) {
+      setTimeout(this.fetch, animationDuration);
+    } else {
+      this.fetch();
+    }
   },
 
   async viewBigImage() {

@@ -74,8 +74,13 @@ class RateService {
   }
 
   static async query({ limit, page }) {
-    var offset = limit * page;
-    var posts = await RateModel.findAll({ limit, offset, order: [["id", "DESC"]] });
+    var posts = await RateModel.findAll({
+      limit,
+      offset: limit * page,
+      order: [["id", "DESC"]],
+      include: [{ model: ActionModel, as: "action" }]
+    });
+
     return posts.map(RateService.format);
   }
 

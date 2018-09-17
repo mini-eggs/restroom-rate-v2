@@ -72,13 +72,23 @@ var Search = {
     document.dispatchEvent(new CustomEvent("modal:close"));
   },
 
+  handleSubmit(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    var post = this.state.posts[0];
+    if (post) {
+      this.animateOut(`/discover/post/${post.id}`)();
+    }
+  },
+
   render() {
     return (
       <div class={this.state.class}>
         <button onclick={this.animateOut()}>
           <i class="material-icons">close</i>
         </button>
-        <form>
+        <form onsubmit={this.handleSubmit}>
           <input
             autofocus
             autocomplete="off"

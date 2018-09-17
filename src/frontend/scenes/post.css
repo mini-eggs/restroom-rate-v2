@@ -6,9 +6,7 @@
 }
 
 .post-single > div.loaded {
-  animation-name: FadeInUp;
-  animation-duration: 250ms;
-  animation-fill-mode: forwards;
+  opacity: 1;
 }
 
 .post-single img {
@@ -22,6 +20,9 @@
 
 .post-single article {
   padding: 15px;
+  animation-name: FadeInUp;
+  animation-duration: 250ms;
+  animation-fill-mode: forwards;
 }
 
 .post-single article h1,
