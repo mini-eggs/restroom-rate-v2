@@ -1,4 +1,7 @@
 import { h } from "wigly";
+import { sleep } from "../constants";
+import Switch from "../components/switch";
+import Loader from "../components/loader";
 import PostList from "../components/post-list";
 import Note from "../components/note";
 import EnsureUser from "../containers/ensure-user";
@@ -6,74 +9,82 @@ import cache from "../packages/cache";
 import xhr from "../packages/xhr";
 import "./account.css";
 
-var sleep = t => new Promise(r => setTimeout(r, t));
+var UpdateDetails = {
+  data: () => ({
+    username: "",
+    loading: false
+  }),
 
-var Loader = {
-  render() {
-    return (
-      <center>
-        <h2>...</h2>
-      </center>
-    );
-  }
-};
-
-var YourPosts = {
-  data() {
-    return { posts: [] };
-  },
-
-  async mounted() {
-    var posts = await xhr({ url: `/posts/author`, method: "post", props: this.props });
-    this.setState({ posts });
-  },
-
-  render() {
-    return (
-      <div>
-        {this.state.posts.length > 0 ? (
-          <PostList posts={this.state.posts} />
-        ) : (
-          <Note title="Oops!" body="Looks like you haven't created a post yet." />
-        )}
-      </div>
-    );
-  }
-};
-
-var Account = {
-  data() {
-    return { ...cache.user, loading: false };
-  },
-
-  handleUsernameInput(event) {
+  handleInput(event) {
     this.setState({ username: event.target.value });
   },
 
   async handleSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.setState({ loading: true });
-    var req = xhr({ url: "/user", method: "patch", props: this.state });
-    var [user, _] = await Promise.all([req, sleep(1000)]);
-    cache.user = user;
-    this.setState({ ...user, loading: false });
+
+    var username = this.state.username;
+    var token = cache.user.token;
+
+    if (username) {
+      this.setState({ loading: true });
+      var req = xhr({ url: "/user", method: "patch", props: { token, username } });
+      var [user, _] = await Promise.all([req, sleep(750)]);
+      cache.user = user;
+      this.setState({ loading: false });
+    }
   },
 
   render() {
     return (
+      <Switch>
+        {[this.state.loading, <Loader />]}
+        {[true, this.renderForm()]}
+      </Switch>
+    );
+  },
+
+  renderForm() {
+    return (
+      <form onsubmit={this.handleSubmit}>
+        <input type="text" placeholder="Username" oninput={this.handleInput} />
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+};
+
+var YourPosts = {
+  data() {
+    return { posts: [], loading: true };
+  },
+
+  async mounted() {
+    var token = cache.user.token;
+    var req = xhr({ url: `/posts/author`, method: "post", props: { token } });
+    var [posts, _] = await Promise.all([req, sleep(750)]);
+    this.setState({ posts, loading: false });
+  },
+
+  render() {
+    return (
+      <Switch>
+        {[this.state.loading, <Loader />]}
+        {[this.state.posts.length > 0, <PostList posts={this.state.posts} />]}
+        {[true, <Note title="Oops!" body="Looks like you haven't created a post yet." />]}
+      </Switch>
+    );
+  }
+};
+
+var Account = {
+  render() {
+    return (
       <div class="account-scene">
         <Note title="Account" body="Update your account details." />
-        {!this.state.loading ? (
-          <form onsubmit={this.handleSubmit}>
-            <input type="text" oninput={this.handleUsernameInput} placeholder="Username" />
-            <input type="button" value="Submit" onclick={this.handleSubmit} />
-          </form>
-        ) : (
-          <Loader />
-        )}
+        <UpdateDetails />
         <Note title="Your Posts" body="Here's a list of your posts." />
-        <YourPosts token={this.state.token} />
+        <YourPosts />
       </div>
     );
   }

@@ -21,3 +21,5 @@ export var getUserLocation = () => {
     }, reject);
   });
 };
+
+export var sleep = t => new Promise(r => setTimeout(r, t));
